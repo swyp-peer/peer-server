@@ -30,7 +30,7 @@ services:
     restart: always
 
   peer-server:
-    image: peer-server:latest
+    image: haeunseo/peer-server:latest
     ports:
       - 8080:80
     environment:
