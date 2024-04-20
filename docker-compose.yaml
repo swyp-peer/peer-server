@@ -1,0 +1,42 @@
+version: '3'
+
+
+services:
+  mysql:
+    image: mysql:8.0.36 # dockerhub
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 1236
+      MYSQL_DATABASE: peer 
+    volumes:
+      - mysql-db-volume:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 5
+    restart: always
+    container_name: peer-mysql
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 50
+    restart: always
+
+  peer-server:
+    image: peer-server:latest
+    ports:
+      - 8080:80
+    environment:
+      mysql_host: peer-mysql
+    restart: always
+
+
+volumes:
+  mysql-db-volume:
