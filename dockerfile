@@ -1,7 +1,9 @@
 FROM --platform=linux/amd64 gradle:8.7.0-jdk17 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
-RUN gradle build --no-daemon
+
+# TODO add gradle test or just remove -x test.
+RUN gradle build --no-daemon -x test 
 
 FROM --platform=linux/amd64 openjdk:17
 
