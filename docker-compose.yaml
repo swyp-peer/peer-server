@@ -28,15 +28,16 @@ services:
       timeout: 30s
       retries: 50
     restart: always
+    container_name: peer-redis
 
   peer-server:
-    image: haeunseo/peer-server:latest
+    image: peerserver/peer-server:latest
     ports:
       - 8080:80
     environment:
       mysql_host: peer-mysql
     restart: always
-
+    container_name: peer-server
 
 volumes:
   mysql-db-volume:
