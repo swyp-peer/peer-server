@@ -2,18 +2,15 @@ package com.example.peer.user.entity;
 
 import com.example.peer.common.domain.BaseTimeEntity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import com.example.peer.schedule.entity.Schedule;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,18 +30,37 @@ public class User extends BaseTimeEntity {
 
 	private String phoneNumber;
 
-	private String profileImage;
+	private String profileImageUrl;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "mentor_detail_id")
 	private MentorDetail mentorDetail;
 
+	@OneToMany(mappedBy = "mentor")
+	private List<Schedule> schedules = new ArrayList<>();
+
 	@Builder
-	public User(String name, String email, Role role, String phoneNumber, String profileImage) {
+	public User(String name, String email, Role role, String phoneNumber, String profileImageUrl) {
 		this.name = name;
 		this.email = email;
 		this.role = role;
 		this.phoneNumber = phoneNumber;
-		this.profileImage = profileImage;
+		this.profileImageUrl = profileImageUrl;
+	}
+
+	public void UpdateMentorDetail(MentorDetail mentorDetail) {
+		this.mentorDetail = mentorDetail;
+	}
+
+	public void UpdatePhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public void UpdateRole(Role role) {
+		this.role = role;
+	}
+
+	public void UpdateProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
 	}
 }
