@@ -32,13 +32,16 @@ public class Schedule {
 	private Boolean isUsed;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User user;
+	@JoinColumn(referencedColumnName = "user_id", name = "mentor_id")
+	private User mentor;
 
 	@Builder
-	public Schedule(LocalDateTime possibleSchedule, User user) {
+	public Schedule(LocalDateTime possibleSchedule, User mentor) {
 		this.possibleSchedule = possibleSchedule;
-		this.user = user;
+		this.mentor = mentor;
 		this.isUsed = Boolean.FALSE;
+
+		//==연관관계 메서드==//
+		mentor.getSchedules().add(this);
 	}
 }
