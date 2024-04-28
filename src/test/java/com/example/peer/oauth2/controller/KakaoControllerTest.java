@@ -27,7 +27,7 @@ class KakaoControllerTest {
 	@DisplayName("Kakao Redirect Test")
 	void KakaoRedirectTest() throws Exception {
 		mockMvc.perform(get(base_mappring))
-			.andExpect(status().isOk())
+			.andExpect(status().is3xxRedirection())
 			.andDo(print());
 	}
 

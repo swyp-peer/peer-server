@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.example.peer.security.filter.JwtAuthenticationFilter;
 import com.example.peer.security.handler.AuthenticationExceptionHandler;
 import com.example.peer.security.handler.CustomAccessDeniedHandler;
-import com.example.peer.security.handler.LoginSuccessHandler;
 import com.example.peer.security.utils.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

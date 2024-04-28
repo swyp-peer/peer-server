@@ -33,8 +33,8 @@ public class KakaoController {
 	private String redirectURI;
 	private final KakaoLoginService kakaoLoginService;
 	private final JwtTokenProvider jwtTokenProvider;
-	@GetMapping("/")
-	public void kakaoRedirect(HttpServletResponse response) throws IOException {
+	@GetMapping("")
+	public void initiateKakaoLogin(HttpServletResponse response) throws IOException {
 		String uriString = UriComponentsBuilder
 			.fromUriString("https://kauth.kakao.com/oauth/authorize")
 			.queryParam("response_type", "code")
@@ -43,18 +43,19 @@ public class KakaoController {
 			.toUriString();
 		response.sendRedirect(uriString);
 	}
-	@GetMapping("/login")
+
+	@GetMapping("/callback")
 	public ResponseEntity kakaoLogin(@RequestParam("code") String code) {
 		String[] userInfo = kakaoLoginService.kakaoLogin(code);
 		Optional<User> optionalUser = kakaoLoginService.findMember(userInfo[0], OauthType.KAKAO);
 		User user = null;
 		if (optionalUser.isEmpty()) {
-			user = kakaoLoginService.saveSocialMember(userInfo[0], userInfo[1], OauthType.KAKAO);
+			user = kakaoLoginService.saveSocialMember(userInfo[0], userInfo[1], userInfo[2],OauthType.KAKAO);
 		} else {
 			user = optionalUser.get();
 		}
 		Map<String, Object> claims = user.getClaims();
-		claims.put("TokenInfo", jwtTokenProvider.generateToken(SecurityContextHolder.getContext().getAuthentication()));
+		claims.put("TokenInfo", jwtTokenProvider.generateToken(claims));
 		return ResponseEntity.ok().body(claims);
 	}
 

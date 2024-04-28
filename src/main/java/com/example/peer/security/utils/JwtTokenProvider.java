@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,20 +49,17 @@ public class JwtTokenProvider {
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 	}
 
-	public TokenInfo generateToken(Authentication authentication) {
-		String authorities = authentication.getAuthorities().stream()
-			.map(GrantedAuthority::getAuthority)
-			.collect(Collectors.joining(","));
+	public TokenInfo generateToken(Map<String, Object> claims) {
 
 		String accessToken = Jwts.builder()
-			.setSubject(authentication.getName())
-			.claim("auth", authorities)
+			// .setSubject(claims.get())
+			.setClaims(claims)
 			.setExpiration(Date.from(LocalDateTime.now().plusHours(1).toInstant(ZoneOffset.ofHours(8))))
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
 
 		String refreshToken = Jwts.builder()
-			.setExpiration(Date.from(LocalDateTime.now().plusHours(3).toInstant(ZoneOffset.ofHours(8))))
+			.setExpiration(Date.from(LocalDateTime.now().plusHours(3).toInstant(ZoneOffset.ofHours(18))))
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
 		// refreshTokenRepository.save(new RefreshToken(String.valueOf(authentication.getName()), refreshToken, accessToken));
@@ -114,7 +112,7 @@ public class JwtTokenProvider {
 		}
 	}
 
-	private Claims parseClaims(String accessToken) {
+	public Claims parseClaims(String accessToken) {
 		try {
 			return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
 		} catch (ExpiredJwtException e) {

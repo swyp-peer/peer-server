@@ -43,7 +43,7 @@ public class RefreshTokenController {
 				throw new SecurityException(SecurityErrorCode.REFRESH_TOKEN_EXPIRED);
 			}
 			else{
-				TokenInfo tokenInfo = jwtTokenProvider.generateToken(SecurityContextHolder.getContext().getAuthentication());
+				TokenInfo tokenInfo = jwtTokenProvider.generateToken(jwtTokenProvider.parseClaims(accessToken));
 				accessToken = tokenInfo.getAccessToken();
 				refreshToken = tokenInfo.getRefreshToken();
 			}

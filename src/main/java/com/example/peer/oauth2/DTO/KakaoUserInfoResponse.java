@@ -20,5 +20,6 @@ public class KakaoUserInfoResponse {
 	@NoArgsConstructor
 	public static class KakaoProperties {
 		private String nickname;
+		private String profile_image;
 	}
 }
