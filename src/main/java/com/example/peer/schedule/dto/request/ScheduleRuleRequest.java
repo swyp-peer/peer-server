@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Builder
-public class ScheduleCreateRuleRequest {
+public class ScheduleRuleRequest {
 
     private List<Boolean> mondayScheduleRule;
 

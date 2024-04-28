@@ -1,6 +1,6 @@
 package com.example.peer.schedule.entity;
 
-import com.example.peer.schedule.dto.request.ScheduleCreateRuleRequest;
+import com.example.peer.schedule.dto.request.ScheduleRuleRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ScheduleCreateRule {
+public class ScheduleRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,7 +54,7 @@ public class ScheduleCreateRule {
     private List<Boolean> sundayScheduleRule = new ArrayList<>(24);
 
     @Builder
-    public ScheduleCreateRule(LocalDate scheduleStartDate, LocalDate scheduleEndDate) {
+    public ScheduleRule(LocalDate scheduleStartDate, LocalDate scheduleEndDate) {
         this.scheduleStartDate = scheduleStartDate;
         this.scheduleEndDate = scheduleEndDate;
     }
@@ -67,26 +67,26 @@ public class ScheduleCreateRule {
         this.scheduleEndDate = scheduleEndDate;
     }
 
-    public void UpdateScheduleCreateRule(ScheduleCreateRuleRequest scheduleCreateRuleRequest) {
+    public void UpdateScheduleRule(ScheduleRuleRequest scheduleRuleRequest) {
         this.mondayScheduleRule.clear();
-        this.mondayScheduleRule.addAll(scheduleCreateRuleRequest.getMondayScheduleRule());
+        this.mondayScheduleRule.addAll(scheduleRuleRequest.getMondayScheduleRule());
 
         this.tuesdayScheduleRule.clear();
-        this.tuesdayScheduleRule.addAll(scheduleCreateRuleRequest.getTuesdayScheduleRule());
+        this.tuesdayScheduleRule.addAll(scheduleRuleRequest.getTuesdayScheduleRule());
 
         this.wednesdayScheduleRule.clear();
-        this.wednesdayScheduleRule.addAll(scheduleCreateRuleRequest.getWednesdayScheduleRule());
+        this.wednesdayScheduleRule.addAll(scheduleRuleRequest.getWednesdayScheduleRule());
 
         this.thursdayScheduleRule.clear();
-        this.thursdayScheduleRule.addAll(scheduleCreateRuleRequest.getThursdayScheduleRule());
+        this.thursdayScheduleRule.addAll(scheduleRuleRequest.getThursdayScheduleRule());
 
         this.fridayScheduleRule.clear();
-        this.fridayScheduleRule.addAll(scheduleCreateRuleRequest.getFridayScheduleRule());
+        this.fridayScheduleRule.addAll(scheduleRuleRequest.getFridayScheduleRule());
 
         this.saturdayScheduleRule.clear();
-        this.saturdayScheduleRule.addAll(scheduleCreateRuleRequest.getSaturdayScheduleRule());
+        this.saturdayScheduleRule.addAll(scheduleRuleRequest.getSaturdayScheduleRule());
 
         this.sundayScheduleRule.clear();
-        this.sundayScheduleRule.addAll(scheduleCreateRuleRequest.getSundayScheduleRule());
+        this.sundayScheduleRule.addAll(scheduleRuleRequest.getSundayScheduleRule());
     }
 }

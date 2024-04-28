@@ -1,6 +1,6 @@
 package com.example.peer.user.entity;
 
-import com.example.peer.schedule.entity.ScheduleCreateRule;
+import com.example.peer.schedule.entity.ScheduleRule;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -33,7 +33,7 @@ public class MentorDetail {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "schedule_create_rule_id")
-	private ScheduleCreateRule scheduleCreateRule;
+	private ScheduleRule scheduleCreateRule;
 
 	@Builder
 	public MentorDetail(String nickname, String position, String introduction) {
