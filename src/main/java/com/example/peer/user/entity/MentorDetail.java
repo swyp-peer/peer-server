@@ -33,7 +33,7 @@ public class MentorDetail {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "schedule_create_rule_id")
-	private ScheduleRule scheduleCreateRule;
+	private ScheduleRule scheduleRule;
 
 	@Builder
 	public MentorDetail(String nickname, String position, String introduction) {
@@ -45,5 +45,9 @@ public class MentorDetail {
 
 	public void UpdateIsAccepted(Boolean isAccepted) {
 		this.isAccepted = isAccepted;
+	}
+
+	public void UpdateScheduleRule(ScheduleRule scheduleRule) {
+		this.scheduleRule = scheduleRule;
 	}
 }

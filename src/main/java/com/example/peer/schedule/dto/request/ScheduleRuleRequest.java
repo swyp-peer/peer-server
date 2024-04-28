@@ -3,11 +3,15 @@ package com.example.peer.schedule.dto.request;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
 @Builder
 public class ScheduleRuleRequest {
+    private LocalDate scheduleStartDate;
+
+    private LocalDate scheduleEndDate;
 
     private List<Boolean> mondayScheduleRule;
 
