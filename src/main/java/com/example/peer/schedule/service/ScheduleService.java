@@ -24,7 +24,7 @@ public class ScheduleService {
     private final UserRepository userRepository;
 
     /*
-    요일별 일정 규칙 생성 로직
+    멘토-요일별 일정 규칙 생성 로직
      */
     @Transactional
     public void CreateScheduleRule(ScheduleRuleRequest scheduleRuleRequest, Long userId) {
@@ -43,5 +43,12 @@ public class ScheduleService {
         scheduleRule.UpdateScheduleRule(scheduleRuleRequest);
         scheduleRuleRepository.save(scheduleRule);
         user.getMentorDetail().UpdateScheduleRule(scheduleRule);
+    }
+
+    /*
+    멘토-일정 규칙을 참고하여서 새로운 상담 가능 일정 생성 로직
+     */
+    public void CreateSchedule() {
+
     }
 }

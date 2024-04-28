@@ -57,7 +57,7 @@ public class ScheduleServiceTest {
 
         List<Boolean> scheduleRule = new ArrayList<>(24);
         for (int i=0;i<24;i++) {
-            scheduleRule.add(Boolean.FALSE);
+            scheduleRule.add(Boolean.TRUE);
         }
         ScheduleRuleRequest scheduleRuleRequest = ScheduleRuleRequest.builder()
                 .scheduleStartDate(LocalDate.of(2024,1,1))
