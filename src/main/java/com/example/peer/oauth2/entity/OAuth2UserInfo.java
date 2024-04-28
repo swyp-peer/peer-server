@@ -3,6 +3,9 @@ package com.example.peer.oauth2.entity;
 import java.lang.reflect.Member;
 import java.util.Map;
 
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+
+import com.example.peer.user.entity.Role;
 import com.example.peer.user.entity.User;
 
 import jakarta.security.auth.message.AuthException;
@@ -15,12 +18,13 @@ public record OAuth2UserInfo(
 	String profile
 ) {
 
-	public static OAuth2UserInfo of(String registrationId, Map<String, Object> attributes) throws AuthException {
+	public static OAuth2UserInfo of(String registrationId, Map<String, Object> attributes) throws
+		OAuth2AuthenticationException {
 		return switch (registrationId) { // registration id별로 userInfo 생성
 			case "google" -> ofGoogle(attributes);
 			case "kakao" -> ofKakao(attributes);
 			case "naver" -> ofNaver(attributes);
-			default -> throw new AuthException("ILLEGAL_REGISTRATION_ID");
+			default -> throw new OAuth2AuthenticationException("ILLEGAL_REGISTRATION_ID");
 		};
 	}
 
@@ -56,10 +60,8 @@ public record OAuth2UserInfo(
 		return User.builder()
 			.name(name)
 			.email(email)
-			.profile(profile)
-			.memberKey(KeyGenerator.generateKey())
-			.role(Role.USER)
+			.profileImage(profile)
+			.role(Role.MENTEE)
 			.build();
 	}
-	// TODO User에 profile, memberKey, role 추가
 }

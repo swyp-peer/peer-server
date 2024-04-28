@@ -1,4 +1,4 @@
-package com.example.peer.oauth2.handler;
+package com.example.peer.security.handler;
 
 import java.io.IOException;
 

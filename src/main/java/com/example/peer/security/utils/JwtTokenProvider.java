@@ -1,4 +1,4 @@
-package com.example.peer.oauth2;
+package com.example.peer.security.utils;
 
 import java.security.Key;
 import java.sql.Date;
@@ -17,11 +17,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
-import com.example.peer.oauth2.entity.PrincipalDetail;
 import com.example.peer.oauth2.entity.RefreshToken;
-import com.example.peer.oauth2.entity.TokenInfo;
-import com.example.peer.oauth2.repository.RefreshTokenRepository;
+import com.example.peer.security.entity.TokenInfo;
+// import com.example.peer.security.repository.RefreshTokenRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -31,7 +31,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -39,11 +39,11 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtTokenProvider {
 	private final Key key;
 
-	@Autowired
-	RefreshTokenRepository refreshTokenRepository;
+	// @Autowired
+	// RefreshTokenRepository refreshTokenRepository;
 
 	//    // 유저 정보를 가지고 AccessToken, RefreshToken 을 생성하는 메서드
-	public JwtTokenProvider(@Value("${jwt.secret.key}") String secretKey) {
+	public JwtTokenProvider(@Value("${spring.security.jwt.secret-key}") String secretKey) {
 		byte[] keyBytes = Decoders.BASE64.decode(secretKey);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 	}
@@ -64,7 +64,7 @@ public class JwtTokenProvider {
 			.setExpiration(Date.from(LocalDateTime.now().plusHours(3).toInstant(ZoneOffset.ofHours(8))))
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
-		refreshTokenRepository.save(new RefreshToken(String.valueOf(authentication.getName()), refreshToken, accessToken));
+		// refreshTokenRepository.save(new RefreshToken(String.valueOf(authentication.getName()), refreshToken, accessToken));
 
 		return TokenInfo.builder()
 			.grantType("Bearer")
@@ -95,20 +95,23 @@ public class JwtTokenProvider {
 
 
 	//토큰 정보를 검증하는 메서드
-	public boolean validateToken(String token) {
+	public String validateToken(String token) {
 		try {
 			Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-			return true;
+			return "Valid";
 		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
 			log.info("Invalid JWT Token", e);
+			return "Invalid";
 		} catch (ExpiredJwtException e) {
 			log.info("Expired JWT Token", e);
+			return "Expired";
 		} catch (UnsupportedJwtException e) {
 			log.info("Unsupported JWT Token", e);
+			return "Unsupported";
 		} catch (IllegalArgumentException e) {
 			log.info("JWT claims string is empty.", e);
+			return "Empty";
 		}
-		return false;
 	}
 
 	private Claims parseClaims(String accessToken) {
@@ -117,5 +120,11 @@ public class JwtTokenProvider {
 		} catch (ExpiredJwtException e) {
 			return e.getClaims();
 		}
+	}
+	public String resolveToken(String authorization) {
+		if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer")) {
+			return authorization.substring(7);
+		}
+		return null;
 	}
 }

@@ -1,4 +1,4 @@
-package com.example.peer.oauth2;
+package com.example.peer.security.filter;
 
 import java.io.IOException;
 
@@ -14,7 +14,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 
-import com.example.peer.oauth2.handler.AuthenticationExceptionHandler;
+import com.example.peer.security.handler.AuthenticationExceptionHandler;
+import com.example.peer.security.utils.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		IOException {
 		// Get jwt token and validate
 		String token = resolveToken(request);
-		if (token != null && jwtTokenProvider.validateToken(token)) {
+		if (token != null && jwtTokenProvider.validateToken(token).equals("Valid")) {
 			Authentication authentication = jwtTokenProvider.getAuthentication(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 

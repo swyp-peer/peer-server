@@ -1,6 +1,7 @@
-package com.example.peer.config;
+package com.example.peer.security.config;
 
 
+import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -21,4 +22,5 @@ public class AppConfig {
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
+
 }

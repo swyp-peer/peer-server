@@ -1,4 +1,4 @@
-package com.example.peer.oauth2.entity;
+package com.example.peer.security.entity;
 
 
 import lombok.Builder;
