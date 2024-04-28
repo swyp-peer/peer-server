@@ -9,9 +9,6 @@ import java.util.List;
 @Getter
 @Builder
 public class ScheduleRuleRequest {
-    private LocalDate scheduleStartDate;
-
-    private LocalDate scheduleEndDate;
 
     private List<Boolean> mondayScheduleRule;
 

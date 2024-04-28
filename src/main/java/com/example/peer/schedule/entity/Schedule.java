@@ -38,9 +38,11 @@ public class Schedule {
 	@Builder
 	public Schedule(LocalDateTime possibleSchedule, User mentor) {
 		this.possibleSchedule = possibleSchedule;
-		this.mentor = mentor;
 		this.isUsed = Boolean.FALSE;
+	}
 
+	public void UpdateMentor(User mentor) {
+		this.mentor = mentor;
 		//==연관관계 메서드==//
 		mentor.getSchedules().add(this);
 	}

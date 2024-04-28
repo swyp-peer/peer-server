@@ -1,6 +1,7 @@
 package com.example.peer.schedule.entity;
 
 import com.example.peer.schedule.dto.request.ScheduleRuleRequest;
+import com.example.peer.user.entity.MentorDetail;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,17 +14,12 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ScheduleRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_create_rule_id")
     private Long id;
-
-    private LocalDate scheduleStartDate;
-
-    private LocalDate scheduleEndDate;
 
     @ElementCollection
     @CollectionTable(name = "monday_schedule_rule", joinColumns = @JoinColumn(name = "schedule_create_rule_id"))
@@ -53,18 +49,17 @@ public class ScheduleRule {
     @CollectionTable(name = "sunday_schedule_rule",joinColumns = @JoinColumn(name = "schedule_create_rule_id"))
     private List<Boolean> sundayScheduleRule = new ArrayList<>(24);
 
+    @OneToOne(mappedBy = "scheduleRule")
+    private MentorDetail mentorDetail;
+
     @Builder
-    public ScheduleRule(LocalDate scheduleStartDate, LocalDate scheduleEndDate) {
-        this.scheduleStartDate = scheduleStartDate;
-        this.scheduleEndDate = scheduleEndDate;
+    public ScheduleRule() {
     }
 
-    public void UpdateScheduleStartDate(LocalDate scheduleStartDate) {
-        this.scheduleStartDate = scheduleStartDate;
-    }
-
-    public void UpdateScheduleEndDate(LocalDate scheduleEndDate) {
-        this.scheduleEndDate = scheduleEndDate;
+    public void UpdateMentorDetail(MentorDetail mentorDetail) {
+        this.mentorDetail = mentorDetail;
+        //==연관관계 메서드==//
+        mentorDetail.UpdateScheduleRule(this);
     }
 
     public void UpdateScheduleRule(ScheduleRuleRequest scheduleRuleRequest) {
