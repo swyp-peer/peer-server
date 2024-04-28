@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import com.example.peer.security.entity.TokenInfo;
 import com.example.peer.security.exception.SecurityErrorCode;
 import com.example.peer.security.exception.SecurityException;
+import com.example.peer.security.service.UserDetailsServiceImpl;
 import com.example.peer.security.utils.JwtTokenProvider;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class RefreshTokenController {
 
 	private final JwtTokenProvider jwtTokenProvider;
+	private final UserDetailsServiceImpl userDetailsService;
 	private static final Logger logger = LoggerFactory.getLogger(RefreshTokenController.class);
 	@PostMapping("/token/refresh")
 	public ResponseEntity tokenRefresh(@RequestHeader("Authorization") String authorization, @RequestBody String refreshToken) {
@@ -43,7 +46,9 @@ public class RefreshTokenController {
 				throw new SecurityException(SecurityErrorCode.REFRESH_TOKEN_EXPIRED);
 			}
 			else{
-				TokenInfo tokenInfo = jwtTokenProvider.generateToken(jwtTokenProvider.parseClaims(accessToken));
+				Claims claims = jwtTokenProvider.parseClaims(accessToken);
+
+				TokenInfo tokenInfo = jwtTokenProvider.generateToken(userDetailsService.loadUserById(Long.valueOf(claims.get("id").toString())));
 				accessToken = tokenInfo.getAccessToken();
 				refreshToken = tokenInfo.getRefreshToken();
 			}

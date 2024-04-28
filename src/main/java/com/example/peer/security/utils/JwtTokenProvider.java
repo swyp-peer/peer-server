@@ -49,20 +49,23 @@ public class JwtTokenProvider {
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 	}
 
-	public TokenInfo generateToken(Map<String, Object> claims) {
+	public TokenInfo generateToken(UserDetails user) {
+		String authorities = user.getAuthorities().stream()
+			.map(GrantedAuthority::getAuthority)
+			.collect(Collectors.joining(","));
 
 		String accessToken = Jwts.builder()
-			// .setSubject(claims.get())
-			.setClaims(claims)
+			.setSubject(user.getUsername())
+			.claim("auth", authorities)
 			.setExpiration(Date.from(LocalDateTime.now().plusHours(1).toInstant(ZoneOffset.ofHours(8))))
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
 
 		String refreshToken = Jwts.builder()
-			.setExpiration(Date.from(LocalDateTime.now().plusHours(3).toInstant(ZoneOffset.ofHours(18))))
+			.setExpiration(Date.from(LocalDateTime.now().plusHours(3).toInstant(ZoneOffset.ofHours(8))))
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
-		// refreshTokenRepository.save(new RefreshToken(String.valueOf(authentication.getName()), refreshToken, accessToken));
+		// refreshTokenRepository.save(new RefreshToken(String.valueOf(user.getUsername()), refreshToken, accessToken));
 
 		return TokenInfo.builder()
 			.grantType("Bearer")

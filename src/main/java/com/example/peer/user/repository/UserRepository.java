@@ -10,4 +10,6 @@ import com.example.peer.user.entity.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 	Optional<User> findByEmail (String email);
 	Optional<User> findBySocialIdAndOauthType(String SocialId, OauthType oauthType);
+	Optional<User> findById(Long id);
+	Optional<User> findByName(String Name);
 }

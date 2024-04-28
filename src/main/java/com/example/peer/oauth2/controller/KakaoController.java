@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.example.peer.security.service.UserDetailsServiceImpl;
 import com.example.peer.security.utils.JwtTokenProvider;
 import com.example.peer.oauth2.service.KakaoLoginService;
 import com.example.peer.user.entity.OauthType;
@@ -33,6 +34,7 @@ public class KakaoController {
 	private String redirectURI;
 	private final KakaoLoginService kakaoLoginService;
 	private final JwtTokenProvider jwtTokenProvider;
+	private final UserDetailsServiceImpl userDetailsService;
 	@GetMapping("")
 	public void initiateKakaoLogin(HttpServletResponse response) throws IOException {
 		String uriString = UriComponentsBuilder
@@ -55,7 +57,7 @@ public class KakaoController {
 			user = optionalUser.get();
 		}
 		Map<String, Object> claims = user.getClaims();
-		claims.put("TokenInfo", jwtTokenProvider.generateToken(claims));
+		claims.put("TokenInfo", jwtTokenProvider.generateToken(userDetailsService.loadUserById(user.getId())));
 		return ResponseEntity.ok().body(claims);
 	}
 
