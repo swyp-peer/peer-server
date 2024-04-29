@@ -58,6 +58,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		User user = optionalUser.get();
 		List<GrantedAuthority> authorities = new ArrayList<>();
 
+
 		authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
 		log.debug(">> loadUserByUsername() called, found successfully");
 

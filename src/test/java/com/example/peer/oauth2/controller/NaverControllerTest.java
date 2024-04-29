@@ -17,14 +17,14 @@ import lombok.RequiredArgsConstructor;
 @SpringBootTest
 @AutoConfigureMockMvc
 @RequiredArgsConstructor
-class GoogleControllerTest {
-
+class NaverControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
-	private static final String base_mapping = "/oauth2/google";
+
+	private static final String base_mapping = "/oauth2/naver";
 	@Test
-	@DisplayName("Kakao Redirect Test")
-	void GoogleRedirectTest() throws Exception {
+	@DisplayName("Naver Redirect Test")
+	void naverRedirectTest() throws Exception {
 		mockMvc.perform(get(base_mapping))
 			.andExpect(status().is3xxRedirection())
 			.andDo(print());

@@ -41,7 +41,7 @@ class KakaoControllerTest {
 	private UserDetailsServiceImpl userDetailsService;
 	@Autowired
 	private UserRepository userRepository;
-	private static final String base_mappring = "/oauth2/kakao";
+	private static final String base_mapping = "/oauth2/kakao";
 
 
 	String getAccessToken(String username) {
@@ -62,7 +62,7 @@ class KakaoControllerTest {
 	@Test
 	@DisplayName("Kakao Redirect Test")
 	void KakaoRedirectTest() throws Exception {
-		mockMvc.perform(get(base_mappring))
+		mockMvc.perform(get(base_mapping))
 			.andExpect(status().is3xxRedirection())
 			.andDo(print());
 	}
