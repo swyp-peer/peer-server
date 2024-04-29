@@ -49,7 +49,7 @@ public class KakaoController {
 	@GetMapping("/callback")
 	public ResponseEntity kakaoLogin(@RequestParam("code") String code) {
 		String[] userInfo = kakaoLoginService.kakaoLogin(code);
-		Optional<User> optionalUser = kakaoLoginService.findMember(userInfo[0], OauthType.KAKAO);
+		Optional<User> optionalUser = kakaoLoginService.findUser(userInfo[0], OauthType.KAKAO);
 		User user = null;
 		if (optionalUser.isEmpty()) {
 			user = kakaoLoginService.saveSocialMember(userInfo[0], userInfo[1], userInfo[2],OauthType.KAKAO);
