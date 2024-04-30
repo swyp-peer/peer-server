@@ -52,14 +52,14 @@ public class User extends BaseTimeEntity {
 		this.email = email;
 		this.role = role;
 		this.phoneNumber = phoneNumber;
-		this.profileImage = profileImage;
+		this.profileImageUrl = profileImage;
 		this.socialId = socialId;
 		this.oauthType = oauthType;
 	}
 	public Map<String, Object> getClaims() {
 		Map<String, Object> dataMap = new HashMap<>();
 		dataMap.put("userId", id);
-		dataMap.put("profileImage", profileImage);
+		dataMap.put("profileImage", profileImageUrl);
 		dataMap.put("name", name);
 		dataMap.put("email", email);
 		dataMap.put("socialId", socialId);
