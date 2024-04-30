@@ -8,13 +8,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ScheduleRule {
 
     @Id
@@ -54,10 +54,15 @@ public class ScheduleRule {
     private MentorDetail mentorDetail;
 
     @Builder
-    public ScheduleRule() {
-    }
-
-    public void UpdateMentorDetail(MentorDetail mentorDetail) {
+    public ScheduleRule(List<LocalTime> mondayScheduleRule, List<LocalTime> tuesdayScheduleRule, List<LocalTime> wednesdayScheduleRule, List<LocalTime> thursdayScheduleRule,
+                        List<LocalTime> fridayScheduleRule, List<LocalTime> saturdayScheduleRule, List<LocalTime> sundayScheduleRule, MentorDetail mentorDetail) {
+        this.mondayScheduleRule = mondayScheduleRule;
+        this.tuesdayScheduleRule = tuesdayScheduleRule;
+        this.wednesdayScheduleRule = wednesdayScheduleRule;
+        this.thursdayScheduleRule = thursdayScheduleRule;
+        this.fridayScheduleRule = fridayScheduleRule;
+        this.saturdayScheduleRule = saturdayScheduleRule;
+        this.sundayScheduleRule = sundayScheduleRule;
         this.mentorDetail = mentorDetail;
         //==연관관계 메서드==//
         mentorDetail.UpdateScheduleRule(this);
