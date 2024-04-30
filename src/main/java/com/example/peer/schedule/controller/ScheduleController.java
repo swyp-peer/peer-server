@@ -1,10 +1,12 @@
 package com.example.peer.schedule.controller;
 
 import com.example.peer.schedule.dto.request.ScheduleRuleRequest;
+import com.example.peer.schedule.dto.response.PossibleSchedulesResponse;
 import com.example.peer.schedule.dto.response.ScheduleRuleResponse;
 import com.example.peer.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +18,9 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
+    /*
+    멘토가 일정 규칙을 생성
+     */
     @PostMapping("/create")
     public ResponseEntity<ScheduleRuleResponse> CreateScheduleRule(
             ScheduleRuleRequest scheduleRuleRequest,
@@ -25,5 +30,14 @@ public class ScheduleController {
                 .body(scheduleService.CreateScheduleRule(scheduleRuleRequest, mentorId));
     }
 
-
+    /*
+    멘티가 멘토의 상담 가능 일정을 조회
+     */
+    @GetMapping("/view")
+    public ResponseEntity<PossibleSchedulesResponse> ViewPossibleSchedules(
+            Long mentorId
+    ) {
+        return ResponseEntity.ok()
+                .body(scheduleService.ViewPossibleSchedules(mentorId));
+    }
 }
