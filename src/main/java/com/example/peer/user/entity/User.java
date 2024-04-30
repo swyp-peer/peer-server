@@ -1,5 +1,8 @@
 package com.example.peer.user.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.example.peer.common.domain.BaseTimeEntity;
 
 import com.example.peer.schedule.entity.Schedule;
@@ -32,6 +35,10 @@ public class User extends BaseTimeEntity {
 
 	private String profileImageUrl;
 
+	private OauthType oauthType;
+
+	private String socialId;
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "mentor_detail_id")
 	private MentorDetail mentorDetail;
@@ -40,12 +47,25 @@ public class User extends BaseTimeEntity {
 	private List<Schedule> schedules = new ArrayList<>();
 
 	@Builder
-	public User(String name, String email, Role role, String phoneNumber, String profileImageUrl) {
+	public User(String name, String email, Role role, String phoneNumber, String profileImage, String socialId, OauthType oauthType) {
 		this.name = name;
 		this.email = email;
 		this.role = role;
 		this.phoneNumber = phoneNumber;
-		this.profileImageUrl = profileImageUrl;
+		this.profileImage = profileImage;
+		this.socialId = socialId;
+		this.oauthType = oauthType;
+	}
+	public Map<String, Object> getClaims() {
+		Map<String, Object> dataMap = new HashMap<>();
+		dataMap.put("userId", id);
+		dataMap.put("profileImage", profileImage);
+		dataMap.put("name", name);
+		dataMap.put("email", email);
+		dataMap.put("socialId", socialId);
+		dataMap.put("oauthType", oauthType);
+		return dataMap;
+
 	}
 
 	public void UpdateMentorDetail(MentorDetail mentorDetail) {
