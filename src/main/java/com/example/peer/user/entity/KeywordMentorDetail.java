@@ -33,7 +33,10 @@ public class KeywordMentorDetail {
 
 	@Builder
 	public KeywordMentorDetail(MentorDetail mentorDetail, Keyword keyword) {
-		this.mentorDetail = mentorDetail;
 		this.keyword = keyword;
+		this.mentorDetail = mentorDetail;
+
+		//==연관관계 메서드==//
+		mentorDetail.getKeywordMentorDetails().add(this);
 	}
 }
