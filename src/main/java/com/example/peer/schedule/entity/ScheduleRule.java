@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,31 +24,31 @@ public class ScheduleRule {
 
     @ElementCollection
     @CollectionTable(name = "monday_schedule_rule", joinColumns = @JoinColumn(name = "schedule_create_rule_id"))
-    private List<Boolean> mondayScheduleRule = new ArrayList<>(24);
+    private List<LocalTime> mondayScheduleRule = new ArrayList<>(24);
 
     @ElementCollection
     @CollectionTable(name = "tuesday_schedule_rule",joinColumns = @JoinColumn(name = "schedule_create_rule_id"))
-    private List<Boolean> tuesdayScheduleRule = new ArrayList<>(24);
+    private List<LocalTime> tuesdayScheduleRule = new ArrayList<>(24);
 
     @ElementCollection
     @CollectionTable(name = "wednesday_schedule_rule",joinColumns = @JoinColumn(name = "schedule_create_rule_id"))
-    private List<Boolean> wednesdayScheduleRule = new ArrayList<>(24);
+    private List<LocalTime> wednesdayScheduleRule = new ArrayList<>(24);
 
     @ElementCollection
     @CollectionTable(name = "thursday_schedule_rule",joinColumns = @JoinColumn(name = "schedule_create_rule_id"))
-    private List<Boolean> thursdayScheduleRule = new ArrayList<>(24);
+    private List<LocalTime> thursdayScheduleRule = new ArrayList<>(24);
 
     @ElementCollection
     @CollectionTable(name = "friday_schedule_rule",joinColumns = @JoinColumn(name = "schedule_create_rule_id"))
-    private List<Boolean> fridayScheduleRule = new ArrayList<>(24);
+    private List<LocalTime> fridayScheduleRule = new ArrayList<>(24);
 
     @ElementCollection
     @CollectionTable(name = "saturday_schedule_rule",joinColumns = @JoinColumn(name = "schedule_create_rule_id"))
-    private List<Boolean> saturdayScheduleRule = new ArrayList<>(24);
+    private List<LocalTime> saturdayScheduleRule = new ArrayList<>(24);
 
     @ElementCollection
     @CollectionTable(name = "sunday_schedule_rule",joinColumns = @JoinColumn(name = "schedule_create_rule_id"))
-    private List<Boolean> sundayScheduleRule = new ArrayList<>(24);
+    private List<LocalTime> sundayScheduleRule = new ArrayList<>(24);
 
     @OneToOne(mappedBy = "scheduleRule")
     private MentorDetail mentorDetail;

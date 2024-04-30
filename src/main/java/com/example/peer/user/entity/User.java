@@ -2,15 +2,11 @@ package com.example.peer.user.entity;
 
 import com.example.peer.common.domain.BaseTimeEntity;
 
-import com.example.peer.schedule.entity.Schedule;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -35,9 +31,6 @@ public class User extends BaseTimeEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "mentor_detail_id")
 	private MentorDetail mentorDetail;
-
-	@OneToMany(mappedBy = "mentor")
-	private List<Schedule> schedules = new ArrayList<>();
 
 	@Builder
 	public User(String name, String email, Role role, String phoneNumber, String profileImageUrl) {

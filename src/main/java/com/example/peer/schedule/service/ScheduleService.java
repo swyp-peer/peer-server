@@ -1,11 +1,9 @@
 package com.example.peer.schedule.service;
 
 import com.example.peer.schedule.dto.request.ScheduleRuleRequest;
-import com.example.peer.schedule.entity.Schedule;
 import com.example.peer.schedule.entity.ScheduleRule;
 import com.example.peer.schedule.exception.ScheduleErrorCode;
 import com.example.peer.schedule.exception.ScheduleException;
-import com.example.peer.schedule.repository.ScheduleRepository;
 import com.example.peer.schedule.repository.ScheduleRuleRepository;
 import com.example.peer.user.entity.User;
 import com.example.peer.user.exception.UserErrorCode;
@@ -15,9 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,7 +20,6 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class ScheduleService {
 
-    private final ScheduleRepository scheduleRepository;
     private final ScheduleRuleRepository scheduleRuleRepository;
     private final UserRepository userRepository;
 
@@ -67,39 +61,6 @@ public class ScheduleService {
             throw new ScheduleException(ScheduleErrorCode.SCHEDULE_RULE_NOT_FOUND);
         }
         ScheduleRule scheduleRule = findScheduleRule.get();
-        for(int i = 0; i < 28; i++) {
-            List<Boolean> scheduleRules = DaytoScheduleRule(LocalDate.now().plusDays(i).getDayOfWeek().getValue(), scheduleRule);
-            for(int j = 0; j<24; j++) {
-                if(scheduleRules.get(j)) {
-                    LocalDateTime possibleSchedule = LocalDate.now().plusDays(i).atStartOfDay().plusHours(j);
-                    if (scheduleRepository.existsByPossibleSchedule(possibleSchedule)) {
-                        continue;
-                    }
-                    Schedule schedule = Schedule.builder()
-                            .possibleSchedule(possibleSchedule)
-                            .build();
-                    scheduleRepository.save(schedule);
-                    schedule.UpdateMentor(mentor);
-                }
-            }
-        }
-    }
 
-    private List<Boolean> DaytoScheduleRule(int dayOfWeek, ScheduleRule scheduleRule) {
-        if(dayOfWeek == 1) {
-            return scheduleRule.getMondayScheduleRule();
-        } else if (dayOfWeek == 2) {
-            return scheduleRule.getTuesdayScheduleRule()    ;
-        } else if (dayOfWeek == 3) {
-            return scheduleRule.getWednesdayScheduleRule()    ;
-        } else if (dayOfWeek == 4) {
-            return scheduleRule.getThursdayScheduleRule()    ;
-        } else if (dayOfWeek == 5) {
-            return scheduleRule.getFridayScheduleRule()    ;
-        } else if (dayOfWeek == 6) {
-            return scheduleRule.getSaturdayScheduleRule()    ;
-        } else{
-            return scheduleRule.getSundayScheduleRule()    ;
-        }
     }
 }

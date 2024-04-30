@@ -4,23 +4,24 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Getter
 @Builder
 public class ScheduleRuleRequest {
 
-    private List<Boolean> mondayScheduleRule;
+    private List<LocalTime> mondayScheduleRule;
 
-    private List<Boolean> tuesdayScheduleRule;
+    private List<LocalTime> tuesdayScheduleRule;
 
-    private List<Boolean> wednesdayScheduleRule;
+    private List<LocalTime> wednesdayScheduleRule;
 
-    private List<Boolean> thursdayScheduleRule;
+    private List<LocalTime> thursdayScheduleRule;
 
-    private List<Boolean> fridayScheduleRule;
+    private List<LocalTime> fridayScheduleRule;
 
-    private List<Boolean> saturdayScheduleRule;
+    private List<LocalTime> saturdayScheduleRule;
 
-    private List<Boolean> sundayScheduleRule;
+    private List<LocalTime> sundayScheduleRule;
 }

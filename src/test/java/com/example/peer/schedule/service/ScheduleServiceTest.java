@@ -2,7 +2,6 @@ package com.example.peer.schedule.service;
 
 import com.example.peer.schedule.dto.request.ScheduleRuleRequest;
 import com.example.peer.schedule.entity.ScheduleRule;
-import com.example.peer.schedule.repository.ScheduleRepository;
 import com.example.peer.schedule.repository.ScheduleRuleRepository;
 import com.example.peer.user.entity.MentorDetail;
 import com.example.peer.user.entity.Role;
@@ -17,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,9 +54,9 @@ public class ScheduleServiceTest {
         mentorDetailRepository.save(mentorDetail);
         mentor.UpdateMentorDetail(mentorDetail);
 
-        List<Boolean> scheduleRule = new ArrayList<>(24);
+        List<LocalTime> scheduleRule = new ArrayList<>(24);
         for (int i=0;i<24;i++) {
-            scheduleRule.add(Boolean.TRUE);
+            scheduleRule.add(LocalTime.of(i,0));
         }
         ScheduleRuleRequest scheduleRuleRequest = ScheduleRuleRequest.builder()
                 .mondayScheduleRule(scheduleRule)
@@ -80,7 +79,8 @@ public class ScheduleServiceTest {
         ScheduleRule findScheduleRule = findUser.get().getMentorDetail().getScheduleRule();
 
         Assertions.assertEquals(findScheduleRule.getMentorDetail(), mentorDetail);
-        org.assertj.core.api.Assertions.assertThat(findScheduleRule.getMondayScheduleRule()).containsOnly(Boolean.TRUE);
+        org.assertj.core.api.Assertions.assertThat(findScheduleRule.getMondayScheduleRule()).contains(LocalTime.of(0,0));
+        org.assertj.core.api.Assertions.assertThat(findScheduleRule.getMondayScheduleRule()).contains(LocalTime.of(23,0));
 
     }
 }
