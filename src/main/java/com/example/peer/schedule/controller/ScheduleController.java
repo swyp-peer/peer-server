@@ -31,6 +31,18 @@ public class ScheduleController {
     }
 
     /*
+    멘토가 일정 규칙을 수정
+     */
+    @PostMapping("/update")
+    public ResponseEntity<ScheduleRuleResponse> UpdateScheduleRule(
+            ScheduleRuleRequest scheduleRuleRequest,
+            Long mentorId
+    ) {
+        return ResponseEntity.ok()
+                .body(scheduleService.UpdateScheduleRule(scheduleRuleRequest, mentorId));
+    }
+
+    /*
     멘티가 멘토의 상담 가능 일정을 조회
      */
     @GetMapping("/view")

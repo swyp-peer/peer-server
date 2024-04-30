@@ -68,7 +68,7 @@ public class ScheduleRule {
         mentorDetail.UpdateScheduleRule(this);
     }
 
-    public void UpdateScheduleRule(ScheduleRuleRequest scheduleRuleRequest) {
+    public ScheduleRule UpdateScheduleRule(ScheduleRuleRequest scheduleRuleRequest) {
         this.mondayScheduleRule.clear();
         this.mondayScheduleRule.addAll(scheduleRuleRequest.getMondayScheduleRule());
 
@@ -89,5 +89,6 @@ public class ScheduleRule {
 
         this.sundayScheduleRule.clear();
         this.sundayScheduleRule.addAll(scheduleRuleRequest.getSundayScheduleRule());
+        return this;
     }
 }
