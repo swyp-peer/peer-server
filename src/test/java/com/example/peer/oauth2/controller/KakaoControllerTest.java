@@ -48,7 +48,7 @@ class KakaoControllerTest {
 		User user = User.builder()
 			.name(username)
 			.socialId("1")
-			.profileImage("/")
+			.profileImageUrl("/")
 			.role(Role.MENTEE)
 			.oauthType(OauthType.KAKAO)
 			.build();

@@ -2,7 +2,6 @@ package com.example.peer.user.entity;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import com.example.peer.common.domain.BaseTimeEntity;
 
 import jakarta.persistence.*;
@@ -10,6 +9,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,15 +41,16 @@ public class User extends BaseTimeEntity {
 	private MentorDetail mentorDetail;
 
 	@Builder
-	public User(String name, String email, Role role, String phoneNumber, String profileImage, String socialId, OauthType oauthType) {
+	public User(String name, String email, Role role, String phoneNumber, String profileImageUrl, String socialId, OauthType oauthType) {
 		this.name = name;
 		this.email = email;
 		this.role = role;
 		this.phoneNumber = phoneNumber;
-		this.profileImageUrl = profileImage;
+		this.profileImageUrl = profileImageUrl;
 		this.socialId = socialId;
 		this.oauthType = oauthType;
 	}
+
 	public Map<String, Object> getClaims() {
 		Map<String, Object> dataMap = new HashMap<>();
 		dataMap.put("userId", id);
@@ -60,6 +62,14 @@ public class User extends BaseTimeEntity {
 		return dataMap;
 
 	}
+
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public Role getRole() {
+        return role;
+    }
 
 	public void UpdateMentorDetail(MentorDetail mentorDetail) {
 		this.mentorDetail = mentorDetail;
@@ -76,4 +86,16 @@ public class User extends BaseTimeEntity {
 	public void UpdateProfileImageUrl(String profileImageUrl) {
 		this.profileImageUrl = profileImageUrl;
 	}
+	
+	public void setName(String name) {
+        this.name = name;
+    }
+    
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+	
+	public void setEmail(String email) {
+        this.email = email;
+    }
 }

@@ -69,7 +69,7 @@ public record OAuth2UserInfo(
 			.socialId((socialId))
 			.name(name)
 			.email(email)
-			.profileImage(profile)
+			.profileImageUrl(profile)
 			.role(Role.MENTEE)
 			.build();
 	}
