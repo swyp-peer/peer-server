@@ -53,10 +53,6 @@ public class LoginService {
 	@Value("${spring.security.oauth2.client.registration.naver.client-secret}")
 	private String naverClientSecret;
 
-	private final GoogleLoginService googleLoginService;
-	private final NaverLoginService naverLoginService;
-	private final KakaoLoginService kakaoLoginService;
-
 	public Optional<User> findUserByOauthUserInfo(OAuth2UserInfo oAuth2UserInfo) {
 		return userRepository.findBySocialIdAndOauthType(oAuth2UserInfo.socialId(), oAuth2UserInfo.oauthType());
 	}
@@ -104,26 +100,33 @@ public class LoginService {
 		body.add("client_secret", clientSecret);
 		body.add("code", code);
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
-
+		String accessTokenUri;
 		switch (oauthType) {
 			case KAKAO -> {
-				return kakaoLoginService.getAccessToken(request);
+				accessTokenUri = "https://kauth.kakao.com/oauth/token";
 			}
 			case NAVER -> {
-				return naverLoginService.getAccessToken(request);
+				accessTokenUri = "https://nid.naver.com/oauth2.0/token";
 			}
 			case GOOGLE -> {
-				return googleLoginService.getAccessToken(request);
+				accessTokenUri = "https://oauth2.googleapis.com/token";
 			}
 			default -> throw new OauthException(OauthErrorCode.INVALID_OAUTH_TYPE);
 		}
+		RestTemplate restTemplate = new RestTemplate();
+		UriComponents uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(accessTokenUri).build();
+
+		ResponseEntity<Map<String, Object>> response = restTemplate.exchange(uriComponentsBuilder.toUri(),
+			HttpMethod.POST, request, new ParameterizedTypeReference<Map<String, Object>>() {
+			});
+		Map<String, Object> responseBody = response.getBody();
+		return (String)responseBody.get("access_token");
 	}
 
 	public OAuth2UserInfo getUserInfo(OauthType oauthType, String accessToken) {
 
 		RestTemplate restTemplate = new RestTemplate();
 
-		// Header
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer " + accessToken);
 		headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
