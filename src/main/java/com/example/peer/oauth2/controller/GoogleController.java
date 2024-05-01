@@ -55,7 +55,6 @@ public class GoogleController {
 		User user = null;
 		if (optionalUser.isEmpty()) {
 			log.debug(">> optional user was empty");
-			//socialId, nickname, picture, email
 			user = loginService.saveMentee(oAuth2UserInfo);
 		} else {
 			user = optionalUser.get();

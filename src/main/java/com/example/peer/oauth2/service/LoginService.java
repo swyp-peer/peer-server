@@ -53,20 +53,6 @@ public class LoginService {
 	@Value("${spring.security.oauth2.client.registration.naver.client-secret}")
 	private String naverClientSecret;
 
-	public Optional<User> findUserByOauthUserInfo(OAuth2UserInfo oAuth2UserInfo) {
-		return userRepository.findBySocialIdAndOauthType(oAuth2UserInfo.socialId(), oAuth2UserInfo.oauthType());
-	}
-
-	public OAuth2UserInfo login(String code, OauthType oauthType) {
-		String accessToken = getAccessToken(code, oauthType);
-		return getUserInfo(oauthType, accessToken);
-	}
-
-	public User saveMentee(OAuth2UserInfo oAuth2UserInfo) {
-		User user = oAuth2UserInfo.toEntity();
-		return userRepository.save(user);
-	}
-
 	public String getAccessToken(String code, OauthType oauthType) {
 
 		String restAPiKey;
@@ -161,5 +147,19 @@ public class LoginService {
 		Map<String, Object> responseBody = response.getBody();
 		return OAuth2UserInfo.of(oauthType, responseBody);
 		//TODO 카카오 앱 심사 이후 email도 받아오도록 처리
+	}
+
+	public Optional<User> findUserByOauthUserInfo(OAuth2UserInfo oAuth2UserInfo) {
+		return userRepository.findBySocialIdAndOauthType(oAuth2UserInfo.socialId(), oAuth2UserInfo.oauthType());
+	}
+
+	public OAuth2UserInfo login(String code, OauthType oauthType) {
+		String accessToken = getAccessToken(code, oauthType);
+		return getUserInfo(oauthType, accessToken);
+	}
+
+	public User saveMentee(OAuth2UserInfo oAuth2UserInfo) {
+		User user = oAuth2UserInfo.toEntity();
+		return userRepository.save(user);
 	}
 }
