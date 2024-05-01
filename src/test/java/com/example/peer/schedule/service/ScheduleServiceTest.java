@@ -157,7 +157,7 @@ public class ScheduleServiceTest {
     }
 
     @Test
-    public void 맨토의_상담_가능_일정_조회() {
+    public void 멘토의_상담_가능_일정_조회() {
         //given
         User mentor = User.builder()
                 .name("peer")
