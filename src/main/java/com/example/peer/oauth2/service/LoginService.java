@@ -130,7 +130,21 @@ public class LoginService {
 
 		HttpEntity<String> request = new HttpEntity<>(headers);
 
-		String userInfoUri = "https://openapi.naver.com/v1/nid/me";
+		String userInfoUri;
+
+		switch (oauthType) {
+			case KAKAO -> {
+				userInfoUri = "https://kapi.kakao.com/v2/user/me";
+			}
+			case NAVER -> {
+				userInfoUri = "https://openapi.naver.com/v1/nid/me";
+			}
+			case GOOGLE -> {
+				userInfoUri = "https://www.googleapis.com/userinfo/v2/me";
+			}
+			default -> throw new OauthException(OauthErrorCode.INVALID_OAUTH_TYPE);
+		}
+
 		UriComponents uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(userInfoUri).build();
 
 		ResponseEntity<Map<String, Object>> response = restTemplate.exchange(uriComponentsBuilder.toUri(),

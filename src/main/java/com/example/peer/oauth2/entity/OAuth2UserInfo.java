@@ -1,6 +1,5 @@
 package com.example.peer.oauth2.entity;
 
-import java.lang.reflect.Member;
 import java.util.Map;
 
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -9,7 +8,6 @@ import com.example.peer.user.entity.OauthType;
 import com.example.peer.user.entity.Role;
 import com.example.peer.user.entity.User;
 
-import jakarta.security.auth.message.AuthException;
 import lombok.Builder;
 
 @Builder
@@ -33,34 +31,35 @@ public record OAuth2UserInfo(
 
 	private static OAuth2UserInfo ofGoogle(Map<String, Object> attributes) {
 		return OAuth2UserInfo.builder()
-			.socialId((String) attributes.get("id"))
-			.name((String) attributes.get("name"))
-			.email((String) attributes.get("email"))
-			.profile((String) attributes.get("picture"))
+			.socialId((String)attributes.get("id"))
+			.name((String)attributes.get("name"))
+			.email((String)attributes.get("email"))
+			.profile((String)attributes.get("picture"))
 			.oauthType(OauthType.GOOGLE)
 			.build();
 	}
 
 	private static OAuth2UserInfo ofKakao(Map<String, Object> attributes) {
-		Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+		Map<String, Object> properties = (Map<String, Object>)attributes.get("properties");
 
 		return OAuth2UserInfo.builder()
-			.socialId((String) attributes.get("id"))
-			.name((String) properties.get("nickname"))
-//			.email((String) account.get("email"))
+			.socialId(Long.toString((Long)attributes.get("id")))
+			.name((String)properties.get("nickname"))
+			//			.email((String) account.get("email"))
 			.oauthType(OauthType.KAKAO)
-			.profile((String) properties.get("profile_image"))
+			.profile((String)properties.get("profile_image"))
 			.build();
 	}
+
 	private static OAuth2UserInfo ofNaver(Map<String, Object> attributes) {
-		Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+		Map<String, Object> response = (Map<String, Object>)attributes.get("response");
 
 		return OAuth2UserInfo.builder()
-			.socialId((String) response.get("id"))
-			.name((String) response.get("name"))
+			.socialId((String)response.get("id"))
+			.name((String)response.get("nickname"))
 			.oauthType(OauthType.NAVER)
-			.email((String) response.get("email"))
-			.profile((String) response.get("profile_image"))
+			.email((String)response.get("email"))
+			.profile((String)response.get("profile_image"))
 			.build();
 	}
 
