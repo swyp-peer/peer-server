@@ -67,18 +67,18 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-processResources {
-    def properties = new Properties()
-    file("src/main/resources/database.properties").withInputStream { properties.load(it) }
+// processResources {
+//     def properties = new Properties()
+//     file("src/main/resources/database.properties").withInputStream { properties.load(it) }
 
-    filesMatching('application.properties') {
-        expand(properties)
-    }
-}
+//     filesMatching('application.properties') {
+//         expand(properties)
+//     }
+// }
 
-test {
-    testLogging {
-        events "passed"
-        showStandardStreams = true
-    }
-}
+// test {
+//     testLogging {
+//         events "passed"
+//         showStandardStreams = true
+//     }
+// }
