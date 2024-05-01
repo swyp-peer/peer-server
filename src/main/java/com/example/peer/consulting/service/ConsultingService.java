@@ -4,6 +4,7 @@ import com.example.peer.consulting.dto.request.ConsultingRequest;
 import com.example.peer.consulting.dto.response.ConsultingDetailResponse;
 import com.example.peer.consulting.entity.Consulting;
 import com.example.peer.consulting.entity.ConsultingDetail;
+import com.example.peer.consulting.entity.State;
 import com.example.peer.consulting.entity.TeamComposition;
 import com.example.peer.consulting.exception.ConsultingErrorCode;
 import com.example.peer.consulting.exception.ConsultingException;
@@ -111,5 +112,22 @@ public class ConsultingService {
     멘토-상담을 수락하는 로직
     상담 상세 정보들을 리턴
      */
+    @Transactional
+    public ConsultingDetailResponse AcceptConsulting(Long consultingId, Long mentorId) {
+        Consulting consulting = consultingRepository.findById(consultingId).orElseThrow(
+                () -> new ConsultingException(ConsultingErrorCode.CONSULTING_NOT_FOUND)
+        );
+        if(!consulting.getMentor().getId().equals(mentorId)) {
+            throw new ConsultingException(ConsultingErrorCode.CANNOT_UPDATE_CONSULTING_STATE);
+        }
+        consulting.UpdateState(State.ACCEPTED);
+        return ConsultingDetailResponse.builder()
+                .consulting(consulting)
+                .consultingDetail(consulting.getConsultingDetail())
+                .teamComposition(consulting.getConsultingDetail().getTeamComposition())
+                .mentorDetail(consulting.getMentor().getMentorDetail())
+                .mentee(consulting.getMentee())
+                .build();
+    }
 
 }

@@ -5,9 +5,7 @@ import com.example.peer.consulting.dto.response.ConsultingDetailResponse;
 import com.example.peer.consulting.service.ConsultingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,5 +24,17 @@ public class ConsultingController {
     ) {
         return ResponseEntity.ok()
                 .body(consultingService.CreateConsulting(consultingRequest, menteeId));
+    }
+
+    /*
+    멘토가 세로운 상담을 수락
+     */
+    @GetMapping("/{consultingId}/accept")
+    public ResponseEntity<ConsultingDetailResponse> AcceptConsulting(
+            @PathVariable("consultingId") Long consultingId,
+            Long mentorId
+    ) {
+        return ResponseEntity.ok()
+                .body(consultingService.AcceptConsulting(consultingId, mentorId));
     }
 }

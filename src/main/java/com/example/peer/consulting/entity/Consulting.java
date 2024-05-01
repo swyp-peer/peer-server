@@ -44,4 +44,8 @@ public class Consulting extends BaseTimeEntity {
         this.consultingDetail = consultingDetail;
         this.state = State.WAITING;
     }
+
+    public void UpdateState(State state) {
+        this.state = state;
+    }
 }
