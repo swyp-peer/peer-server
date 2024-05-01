@@ -21,7 +21,7 @@ public class ConsultingRepositoryImpl implements ConsultingRepositoryCustom{
     public List<LocalDateTime> findConsultingDateTimeByIsAccepted(Long id) {
         return jpaQueryFactory.select(consulting.consultingDateTime)
                 .from(consulting)
-                .leftJoin(consulting.mentor, user).fetchJoin()
+                .leftJoin(consulting.mentor, user)
                 .where(consulting.mentor.id.eq(id),
                         consulting.isAccepted.eq(Boolean.TRUE),
                         consulting.consultingDateTime.after(LocalDateTime.now()))
