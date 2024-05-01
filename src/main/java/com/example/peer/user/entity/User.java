@@ -8,12 +8,14 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
@@ -62,15 +64,7 @@ public class User extends BaseTimeEntity {
 		return dataMap;
 
 	}
-
-    public List<Schedule> getSchedules() {
-        return schedules;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
+	
 	public void UpdateMentorDetail(MentorDetail mentorDetail) {
 		this.mentorDetail = mentorDetail;
 	}
@@ -86,16 +80,4 @@ public class User extends BaseTimeEntity {
 	public void UpdateProfileImageUrl(String profileImageUrl) {
 		this.profileImageUrl = profileImageUrl;
 	}
-	
-	public void setName(String name) {
-        this.name = name;
-    }
-    
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-	
-	public void setEmail(String email) {
-        this.email = email;
-    }
 }
