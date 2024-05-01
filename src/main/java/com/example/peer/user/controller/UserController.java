@@ -33,7 +33,7 @@ public class UserController {
         produces=MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<String> getUserInfo(@RequestHeader("Authorization") String accessToken) {
-        // Access token에서 email 추출 (JWT 사용 가정)
+        // Access token에서 email 추출
         String email = extractEmailFromToken(accessToken);
         UserDto userDto = userService.getUserInfo(email);
         ObjectMapper objectMapper = new ObjectMapper();
