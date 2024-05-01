@@ -36,10 +36,12 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.projectlombok:lombok'
     implementation 'io.jsonwebtoken:jjwt:0.12.0'
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     runtimeOnly 'mysql:mysql-connector-java:8.0.28'
 
@@ -49,8 +51,34 @@ dependencies {
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    
+    annotationProcessor 'org.projectlombok:lombok'
+    
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.assertj:assertj-core'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+processResources {
+    def properties = new Properties()
+    file("src/main/resources/database.properties").withInputStream { properties.load(it) }
+
+    filesMatching('application.properties') {
+        expand(properties)
+    }
+}
+
+test {
+    testLogging {
+        events "passed"
+        showStandardStreams = true
+    }
 }
