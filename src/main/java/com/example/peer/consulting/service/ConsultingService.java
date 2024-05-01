@@ -36,27 +36,33 @@ public class ConsultingService {
     /*
     맨티-새로운 상담을 신청
      */
+    @Transactional
     public ConsultingDetailResponse CreateConsulting(ConsultingRequest consultingRequest, Long menteeId) {
         if(checkValidationConsultingDateTime(consultingRequest.getConsultingDateTime(), consultingRequest.getMentorId())) {
-            return ConsultingDetailResponse.builder()
-                    .consulting(consultingRepository.save(Consulting.builder()
-                            .mentor(userRepository.findById(consultingRequest.getMentorId()).orElseThrow(
-                                    () -> new UserException(UserErrorCode.USER_NOT_FOUND)
-                            ))
-                            .mentee(userRepository.findById(menteeId).orElseThrow(
-                                    () -> new UserException(UserErrorCode.USER_NOT_FOUND)
-                            ))
-                            .consultingDateTime(consultingRequest.getConsultingDateTime())
-                            .consultingDetail(ConsultingDetail.builder()
-                                    .message(consultingRequest.getMessage())
-                                    .teamComposition(TeamComposition.builder()
-                                            .managerCount(consultingRequest.getManagerCount())
-                                            .designerCount(consultingRequest.getDesignerCount())
-                                            .frontendCount(consultingRequest.getFrontendCount())
-                                            .backendCount(consultingRequest.getBackendCount())
-                                            .build())
+            Consulting consulting = consultingRepository.save(Consulting.builder()
+                    .mentor(userRepository.findById(consultingRequest.getMentorId()).orElseThrow(
+                            () -> new UserException(UserErrorCode.USER_NOT_FOUND)
+                    ))
+                    .mentee(userRepository.findById(menteeId).orElseThrow(
+                            () -> new UserException(UserErrorCode.USER_NOT_FOUND)
+                    ))
+                    .consultingDateTime(consultingRequest.getConsultingDateTime())
+                    .consultingDetail(ConsultingDetail.builder()
+                            .message(consultingRequest.getMessage())
+                            .teamComposition(TeamComposition.builder()
+                                    .managerCount(consultingRequest.getManagerCount())
+                                    .designerCount(consultingRequest.getDesignerCount())
+                                    .frontendCount(consultingRequest.getFrontendCount())
+                                    .backendCount(consultingRequest.getBackendCount())
                                     .build())
-                            .build()))
+                            .build())
+                    .build());
+            return ConsultingDetailResponse.builder()
+                    .consulting(consulting)
+                    .consultingDetail(consulting.getConsultingDetail())
+                    .teamComposition(consulting.getConsultingDetail().getTeamComposition())
+                    .mentorDetail(consulting.getMentor().getMentorDetail())
+                    .mentee(consulting.getMentee())
                     .build();
         }else {
             throw new ConsultingException(ConsultingErrorCode.CANNOT_REQUEST_CONSULTING_DURING_THIS_SCHEDULE);
@@ -74,9 +80,7 @@ public class ConsultingService {
         );
         if (DaytoScheduleRule(consultingDateTime.getDayOfWeek().getValue(), findScheduleRule).contains(consultingDateTime.toLocalTime())
                 &&consultingDateTime.isAfter(LocalDateTime.now())
-                &&consultingRepository.findByConsultingDateTimeAndMentor(consultingDateTime, userRepository.findById(mentorId).orElseThrow(
-                        () -> new UserException(UserErrorCode.USER_NOT_FOUND)
-                    )).isEmpty()) {
+                &&consultingRepository.findByConsultingDateTimeAndMentorId(consultingDateTime, mentorId).isEmpty()) {
             return true;
         }
         return false;
@@ -102,4 +106,10 @@ public class ConsultingService {
             return scheduleRule.getSundayScheduleRule();
         }
     }
+
+    /*
+    멘토-상담을 수락하는 로직
+    상담 상세 정보들을 리턴
+     */
+
 }

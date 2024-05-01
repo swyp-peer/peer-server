@@ -1,7 +1,11 @@
 package com.example.peer.consulting.dto.response;
 
 import com.example.peer.consulting.entity.Consulting;
+import com.example.peer.consulting.entity.ConsultingDetail;
 import com.example.peer.consulting.entity.State;
+import com.example.peer.consulting.entity.TeamComposition;
+import com.example.peer.user.entity.MentorDetail;
+import com.example.peer.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,17 +40,17 @@ public class ConsultingDetailResponse {
     private String mentorPosition;
 
     @Builder
-    public ConsultingDetailResponse(Consulting consulting) {
+    public ConsultingDetailResponse(Consulting consulting, ConsultingDetail consultingDetail, TeamComposition teamComposition, MentorDetail mentorDetail, User mentee) {
         this.id = consulting.getId();
         this.consultingDateTime = consulting.getConsultingDateTime();
-        this.message = consulting.getConsultingDetail().getMessage();
-        this.managerCount = consulting.getConsultingDetail().getTeamComposition().getManagerCount();
-        this.designerCount = consulting.getConsultingDetail().getTeamComposition().getDesignerCount();
-        this.frontendCount = consulting.getConsultingDetail().getTeamComposition().getFrontendCount();
-        this.backendCount = consulting.getConsultingDetail().getTeamComposition().getBackendCount();
+        this.message = consultingDetail.getMessage();
+        this.managerCount = teamComposition.getManagerCount();
+        this.designerCount = teamComposition.getDesignerCount();
+        this.frontendCount = teamComposition.getFrontendCount();
+        this.backendCount = teamComposition.getBackendCount();
         this.state = consulting.getState();
-        this.menteeName = consulting.getMentee().getName();
-        this.mentorNickname = consulting.getMentor().getMentorDetail().getNickname();
-        this.mentorPosition = consulting.getMentor().getMentorDetail().getPosition();
+        this.menteeName = mentee.getName();
+        this.mentorNickname = mentorDetail.getNickname();
+        this.mentorPosition = mentorDetail.getPosition();
     }
 }
