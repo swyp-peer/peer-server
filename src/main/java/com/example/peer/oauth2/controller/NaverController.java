@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.example.peer.oauth2.service.KakaoLoginService;
-import com.example.peer.oauth2.service.NaverLoginService;
+import com.example.peer.oauth2.entity.OAuth2UserInfo;
+import com.example.peer.oauth2.service.LoginService;
 import com.example.peer.security.service.UserDetailsServiceImpl;
 import com.example.peer.security.utils.JwtTokenProvider;
 import com.example.peer.user.entity.OauthType;
@@ -32,7 +32,7 @@ public class NaverController {
 	private String restAPIKey;
 	@Value("${spring.security.oauth2.client.registration.naver.redirect-uri}")
 	private String redirectURI;
-	private final NaverLoginService naverLoginService;
+	private final LoginService loginService;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final UserDetailsServiceImpl userDetailsService;
 
@@ -49,12 +49,12 @@ public class NaverController {
 
 	@GetMapping("/callback")
 	public ResponseEntity naverLogin(@RequestParam("code") String code) {
-		String[] userInfo = naverLoginService.naverLogin(code);
-		Optional<User> optionalUser = naverLoginService.findUser(userInfo[0], OauthType.NAVER);
+		OAuth2UserInfo oAuth2UserInfo = loginService.login(code, OauthType.NAVER);
+		Optional<User> optionalUser = loginService.findUserByOauthUserInfo(oAuth2UserInfo);
 		User user = null;
 		if (optionalUser.isEmpty()) {
 			log.debug(">> optional user was empty");
-			user = naverLoginService.saveSocialMember(userInfo[0], userInfo[1], userInfo[2], userInfo[3], OauthType.NAVER);
+			user = loginService.saveMentee(oAuth2UserInfo);
 		} else {
 			log.debug(">> optional user was not empty");
 			user = optionalUser.get();

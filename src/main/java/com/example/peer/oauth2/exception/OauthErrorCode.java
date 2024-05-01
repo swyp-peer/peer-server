@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum OauthErrorCode implements ErrorCode {
+	INVALID_OAUTH_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 소셜 로그인입니다."),
 	CANNOT_FETCH_USER_INFO(HttpStatus.INTERNAL_SERVER_ERROR, "유저 정보를 가져올 수 없습니다."),
 	CANNOT_FETCH_ACCESS_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "엑세스 토큰을 가져올 수 없습니다.");
 
