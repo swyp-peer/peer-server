@@ -110,6 +110,44 @@ public class ConsultingService {
     }
 
     /*
+    멘토-상담 세부 내역 조회 로직
+     */
+    public ConsultingDetailResponse ViewConsultingDetailMentor(Long consultingId, Long mentorId) {
+        Consulting consulting = consultingRepository.findById(consultingId).orElseThrow(
+                () -> new ConsultingException(ConsultingErrorCode.CONSULTING_NOT_FOUND)
+        );
+        if(!consulting.getMentor().getId().equals(mentorId)) {
+            throw new ConsultingException(ConsultingErrorCode.CANNOT_ACCESS_CONSULTING);
+        }
+        return ConsultingDetailResponse.builder()
+                .consulting(consulting)
+                .consultingDetail(consulting.getConsultingDetail())
+                .teamComposition(consulting.getConsultingDetail().getTeamComposition())
+                .mentorDetail(consulting.getMentor().getMentorDetail())
+                .mentee(consulting.getMentee())
+                .build();
+    }
+
+    /*
+    멘티-상담 세부 내역 조회 로직
+     */
+    public ConsultingDetailResponse ViewConsultingDetailMentee(Long consultingId, Long menteeId) {
+        Consulting consulting = consultingRepository.findById(consultingId).orElseThrow(
+                () -> new ConsultingException(ConsultingErrorCode.CONSULTING_NOT_FOUND)
+        );
+        if(!consulting.getMentee().getId().equals(menteeId)) {
+            throw new ConsultingException(ConsultingErrorCode.CANNOT_ACCESS_CONSULTING);
+        }
+        return ConsultingDetailResponse.builder()
+                .consulting(consulting)
+                .consultingDetail(consulting.getConsultingDetail())
+                .teamComposition(consulting.getConsultingDetail().getTeamComposition())
+                .mentorDetail(consulting.getMentor().getMentorDetail())
+                .mentee(consulting.getMentee())
+                .build();
+    }
+
+    /*
     멘토-상담을 수락하는 로직
     상담 상세 정보들을 리턴
      */
@@ -119,7 +157,7 @@ public class ConsultingService {
                 () -> new ConsultingException(ConsultingErrorCode.CONSULTING_NOT_FOUND)
         );
         if(!consulting.getMentor().getId().equals(mentorId)) {
-            throw new ConsultingException(ConsultingErrorCode.CANNOT_UPDATE_CONSULTING_STATE);
+            throw new ConsultingException(ConsultingErrorCode.CANNOT_ACCESS_CONSULTING);
         }
         if(consultingRepository.findByConsultingDateTimeAndMentorIdAndState(consulting.getConsultingDateTime(), mentorId, State.ACCEPTED).isPresent()) {
             throw new ConsultingException(ConsultingErrorCode.CANNOT_CONSULT_DURING_THIS_SCHEDULE);
@@ -144,7 +182,7 @@ public class ConsultingService {
                 () -> new ConsultingException(ConsultingErrorCode.CONSULTING_NOT_FOUND)
         );
         if(!consulting.getMentor().getId().equals(mentorId)) {
-            throw new ConsultingException(ConsultingErrorCode.CANNOT_UPDATE_CONSULTING_STATE);
+            throw new ConsultingException(ConsultingErrorCode.CANNOT_ACCESS_CONSULTING);
         }
         consulting.UpdateState(State.REJECTED);
         return ConsultingDetailResponse.builder()
@@ -211,4 +249,6 @@ public class ConsultingService {
         }
         return consultingSummariesResponse;
     }
+
+
 }

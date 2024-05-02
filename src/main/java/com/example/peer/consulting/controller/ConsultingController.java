@@ -19,7 +19,7 @@ public class ConsultingController {
     /*
     멘티가 새로운 상담을 신청
      */
-    @PostMapping("/create")
+    @PostMapping("/mentee/create")
     public ResponseEntity<ConsultingDetailResponse> CreateConsulting(
             ConsultingRequest consultingRequest,
             Long menteeId
@@ -29,9 +29,33 @@ public class ConsultingController {
     }
 
     /*
+    멘토가 상담 상세를 조회
+     */
+    @GetMapping("/mentor/{consultingId}")
+    public ResponseEntity<ConsultingDetailResponse> ViewConsultingDetailMentor(
+            @PathVariable("consultingId") Long consultingId,
+            Long mentorId
+    ) {
+        return ResponseEntity.ok()
+                .body(consultingService.ViewConsultingDetailMentor(consultingId, mentorId));
+    }
+
+    /*
+    멘티가 상담 상세를 조회
+     */
+    @GetMapping("/mentee/{consultingId}")
+    public ResponseEntity<ConsultingDetailResponse> ViewConsultingDetailMentee(
+            @PathVariable("consultingId") Long consultingId,
+            Long menteeId
+    ) {
+        return ResponseEntity.ok()
+                .body(consultingService.ViewConsultingDetailMentee(consultingId, menteeId));
+    }
+
+    /*
     멘토가 세로운 상담을 수락
      */
-    @GetMapping("/{consultingId}/accept")
+    @GetMapping("/mentor/{consultingId}/accept")
     public ResponseEntity<ConsultingDetailResponse> AcceptConsulting(
             @PathVariable("consultingId") Long consultingId,
             Long mentorId
@@ -43,7 +67,7 @@ public class ConsultingController {
     /*
     멘토가 세로운 상담을 거절
      */
-    @GetMapping("/{consultingId}/reject")
+    @GetMapping("/mentor/{consultingId}/reject")
     public ResponseEntity<ConsultingDetailResponse> RejectConsulting(
             @PathVariable("consultingId") Long consultingId,
             Long mentorId
@@ -75,7 +99,7 @@ public class ConsultingController {
     }
 
     /*
-    멘토가 자신의 수락된 상담 내역을 조회
+    멘토가 자신의 수락된 진행전 상담 내역을 조회
      */
     @GetMapping("/mentor/accepted")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentAcceptedConsultingMentor(
@@ -86,7 +110,7 @@ public class ConsultingController {
     }
 
     /*
-    멘토가 자신의 대기중인 상담 내역을 조회
+    멘토가 자신의 대기중인 진행전 상담 내역을 조회
      */
     @GetMapping("/mentor/waiting")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentWaitingConsultingMentor(
@@ -97,7 +121,7 @@ public class ConsultingController {
     }
 
     /*
-    멘토가 자신의 거절된 상담 내역을 조회
+    멘토가 자신의 거절된 진행전 상담 내역을 조회
      */
     @GetMapping("/mentor/rejected")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentRejectedConsultingMentor(
@@ -108,7 +132,7 @@ public class ConsultingController {
     }
 
     /*
-    멘티가 자신의 수락된 상담 내역을 조회
+    멘티가 자신의 수락된 진행전 상담 내역을 조회
      */
     @GetMapping("/mentee/accepted")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentAcceptedConsultingMentee(
@@ -119,7 +143,7 @@ public class ConsultingController {
     }
 
     /*
-    멘티가 자신의 대기중인 상담 내역을 조회
+    멘티가 자신의 대기중인 진행전 상담 내역을 조회
      */
     @GetMapping("/mentee/waiting")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentWaitingConsultingMentee(
@@ -130,7 +154,7 @@ public class ConsultingController {
     }
 
     /*
-    멘티가 자신의 거절된 상담 내역을 조회
+    멘티가 자신의 거절된 진행전 상담 내역을 조회
      */
     @GetMapping("/mentee/rejected")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentRejectedConsultingMentee(
