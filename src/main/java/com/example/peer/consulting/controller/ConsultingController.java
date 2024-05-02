@@ -37,4 +37,16 @@ public class ConsultingController {
         return ResponseEntity.ok()
                 .body(consultingService.AcceptConsulting(consultingId, mentorId));
     }
+
+    /*
+    멘토가 세로운 상담을 거절
+     */
+    @GetMapping("/{consultingId}/reject")
+    public ResponseEntity<ConsultingDetailResponse> RejectConsulting(
+            @PathVariable("consultingId") Long consultingId,
+            Long mentorId
+    ) {
+        return ResponseEntity.ok()
+                .body(consultingService.RejectConsulting(consultingId, mentorId));
+    }
 }

@@ -6,10 +6,7 @@ import com.example.peer.schedule.dto.response.ScheduleRuleResponse;
 import com.example.peer.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +30,7 @@ public class ScheduleController {
     /*
     멘토가 일정 규칙을 수정
      */
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<ScheduleRuleResponse> UpdateScheduleRule(
             ScheduleRuleRequest scheduleRuleRequest,
             Long mentorId

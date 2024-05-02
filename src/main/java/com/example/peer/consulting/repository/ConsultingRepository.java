@@ -1,6 +1,7 @@
 package com.example.peer.consulting.repository;
 
 import com.example.peer.consulting.entity.Consulting;
+import com.example.peer.consulting.entity.State;
 import com.example.peer.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -9,4 +10,5 @@ import java.util.Optional;
 
 public interface ConsultingRepository extends JpaRepository<Consulting, Long> , ConsultingRepositoryCustom{
     Optional<Consulting> findByConsultingDateTimeAndMentorId(LocalDateTime consultingDateTime, Long id);
+    Optional<Consulting> findByConsultingDateTimeAndMentorIdAndState(LocalDateTime consultingDateTime, Long id, State state);
 }

@@ -39,35 +39,34 @@ public class ConsultingService {
      */
     @Transactional
     public ConsultingDetailResponse CreateConsulting(ConsultingRequest consultingRequest, Long menteeId) {
-        if(checkValidationConsultingDateTime(consultingRequest.getConsultingDateTime(), consultingRequest.getMentorId())) {
-            Consulting consulting = consultingRepository.save(Consulting.builder()
-                    .mentor(userRepository.findById(consultingRequest.getMentorId()).orElseThrow(
-                            () -> new UserException(UserErrorCode.USER_NOT_FOUND)
-                    ))
-                    .mentee(userRepository.findById(menteeId).orElseThrow(
-                            () -> new UserException(UserErrorCode.USER_NOT_FOUND)
-                    ))
-                    .consultingDateTime(consultingRequest.getConsultingDateTime())
-                    .consultingDetail(ConsultingDetail.builder()
-                            .message(consultingRequest.getMessage())
-                            .teamComposition(TeamComposition.builder()
-                                    .managerCount(consultingRequest.getManagerCount())
-                                    .designerCount(consultingRequest.getDesignerCount())
-                                    .frontendCount(consultingRequest.getFrontendCount())
-                                    .backendCount(consultingRequest.getBackendCount())
-                                    .build())
-                            .build())
-                    .build());
-            return ConsultingDetailResponse.builder()
-                    .consulting(consulting)
-                    .consultingDetail(consulting.getConsultingDetail())
-                    .teamComposition(consulting.getConsultingDetail().getTeamComposition())
-                    .mentorDetail(consulting.getMentor().getMentorDetail())
-                    .mentee(consulting.getMentee())
-                    .build();
-        }else {
+        if(!checkValidationConsultingDateTime(consultingRequest.getConsultingDateTime(), consultingRequest.getMentorId())) {
             throw new ConsultingException(ConsultingErrorCode.CANNOT_REQUEST_CONSULTING_DURING_THIS_SCHEDULE);
         }
+        Consulting consulting = consultingRepository.save(Consulting.builder()
+                .mentor(userRepository.findById(consultingRequest.getMentorId()).orElseThrow(
+                        () -> new UserException(UserErrorCode.USER_NOT_FOUND)
+                ))
+                .mentee(userRepository.findById(menteeId).orElseThrow(
+                        () -> new UserException(UserErrorCode.USER_NOT_FOUND)
+                ))
+                .consultingDateTime(consultingRequest.getConsultingDateTime())
+                .consultingDetail(ConsultingDetail.builder()
+                        .message(consultingRequest.getMessage())
+                        .teamComposition(TeamComposition.builder()
+                                .managerCount(consultingRequest.getManagerCount())
+                                .designerCount(consultingRequest.getDesignerCount())
+                                .frontendCount(consultingRequest.getFrontendCount())
+                                .backendCount(consultingRequest.getBackendCount())
+                                .build())
+                        .build())
+                .build());
+        return ConsultingDetailResponse.builder()
+                .consulting(consulting)
+                .consultingDetail(consulting.getConsultingDetail())
+                .teamComposition(consulting.getConsultingDetail().getTeamComposition())
+                .mentorDetail(consulting.getMentor().getMentorDetail())
+                .mentee(consulting.getMentee())
+                .build();
     }
 
     /*
@@ -120,6 +119,9 @@ public class ConsultingService {
         if(!consulting.getMentor().getId().equals(mentorId)) {
             throw new ConsultingException(ConsultingErrorCode.CANNOT_UPDATE_CONSULTING_STATE);
         }
+        if(consultingRepository.findByConsultingDateTimeAndMentorIdAndState(consulting.getConsultingDateTime(), mentorId, State.ACCEPTED).isPresent()) {
+            throw new ConsultingException(ConsultingErrorCode.CANNOT_CONSULT_DURING_THIS_SCHEDULE);
+        }
         consulting.UpdateState(State.ACCEPTED);
         return ConsultingDetailResponse.builder()
                 .consulting(consulting)
@@ -130,4 +132,25 @@ public class ConsultingService {
                 .build();
     }
 
+    /*
+    멘토-상담을 거절하는 로직
+    상담 상세 정보들을 리턴
+     */
+    @Transactional
+    public ConsultingDetailResponse RejectConsulting(Long consultingId, Long mentorId) {
+        Consulting consulting = consultingRepository.findById(consultingId).orElseThrow(
+                () -> new ConsultingException(ConsultingErrorCode.CONSULTING_NOT_FOUND)
+        );
+        if(!consulting.getMentor().getId().equals(mentorId)) {
+            throw new ConsultingException(ConsultingErrorCode.CANNOT_UPDATE_CONSULTING_STATE);
+        }
+        consulting.UpdateState(State.REJECTED);
+        return ConsultingDetailResponse.builder()
+                .consulting(consulting)
+                .consultingDetail(consulting.getConsultingDetail())
+                .teamComposition(consulting.getConsultingDetail().getTeamComposition())
+                .mentorDetail(consulting.getMentor().getMentorDetail())
+                .mentee(consulting.getMentee())
+                .build();
+    }
 }
