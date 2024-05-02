@@ -1,8 +1,6 @@
 package com.example.peer.oauth2.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -14,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.example.peer.oauth2.service.GoogleLoginService;
+import com.example.peer.oauth2.entity.OAuth2UserInfo;
+import com.example.peer.oauth2.service.LoginService;
 import com.example.peer.security.service.UserDetailsServiceImpl;
 import com.example.peer.security.utils.JwtTokenProvider;
 import com.example.peer.user.entity.OauthType;
@@ -33,9 +32,9 @@ public class GoogleController {
 	private String restAPIKey;
 	@Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
 	private String redirectURI;
-	private final GoogleLoginService googleLoginService;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final UserDetailsServiceImpl userDetailsService;
+	private final LoginService loginService;
 
 	@GetMapping("")
 	public void initiateGoogleLogin(HttpServletResponse response) throws IOException {
@@ -51,21 +50,19 @@ public class GoogleController {
 
 	@GetMapping("/callback")
 	public ResponseEntity googleLogin(@RequestParam("code") String code) {
-		String[] userInfo = googleLoginService.googleLogin(code);
-		Optional<User> optionalUser = googleLoginService.findUser(userInfo[0], OauthType.GOOGLE);
+		OAuth2UserInfo oAuth2UserInfo = loginService.login(code, OauthType.GOOGLE);
+		Optional<User> optionalUser = loginService.findUserByOauthUserInfo(oAuth2UserInfo);
 		User user = null;
 		if (optionalUser.isEmpty()) {
 			log.debug(">> optional user was empty");
-			//socialId, nickname, picture, email
-			user = googleLoginService.saveSocialMember(userInfo[0], userInfo[1], userInfo[2], userInfo[3], OauthType.GOOGLE);
+			user = loginService.saveMentee(oAuth2UserInfo);
 		} else {
 			user = optionalUser.get();
 		}
-		log.debug(">> user role: {}", user.getRole() );
+		log.debug(">> user role: {}", user.getRole());
 		Map<String, Object> claims = user.getClaims();
 		claims.put("TokenInfo", jwtTokenProvider.generateToken(userDetailsService.loadUserById(user.getId())));
 		return ResponseEntity.ok().body(claims);
 	}
-
 
 }

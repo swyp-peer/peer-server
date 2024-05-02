@@ -6,16 +6,16 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.example.peer.oauth2.entity.OAuth2UserInfo;
+import com.example.peer.oauth2.service.LoginService;
 import com.example.peer.security.service.UserDetailsServiceImpl;
 import com.example.peer.security.utils.JwtTokenProvider;
-import com.example.peer.oauth2.service.KakaoLoginService;
 import com.example.peer.user.entity.OauthType;
 import com.example.peer.user.entity.User;
 
@@ -32,9 +32,10 @@ public class KakaoController {
 	private String restAPIKey;
 	@Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
 	private String redirectURI;
-	private final KakaoLoginService kakaoLoginService;
+	private final LoginService loginService;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final UserDetailsServiceImpl userDetailsService;
+
 	@GetMapping("")
 	public void initiateKakaoLogin(HttpServletResponse response) throws IOException {
 		String uriString = UriComponentsBuilder
@@ -48,11 +49,11 @@ public class KakaoController {
 
 	@GetMapping("/callback")
 	public ResponseEntity kakaoLogin(@RequestParam("code") String code) {
-		String[] userInfo = kakaoLoginService.kakaoLogin(code);
-		Optional<User> optionalUser = kakaoLoginService.findUser(userInfo[0], OauthType.KAKAO);
+		OAuth2UserInfo oAuth2UserInfo = loginService.login(code, OauthType.KAKAO);
+		Optional<User> optionalUser = loginService.findUserByOauthUserInfo(oAuth2UserInfo);
 		User user = null;
 		if (optionalUser.isEmpty()) {
-			user = kakaoLoginService.saveSocialMember(userInfo[0], userInfo[1], userInfo[2],OauthType.KAKAO);
+			user = loginService.saveMentee(oAuth2UserInfo);
 		} else {
 			user = optionalUser.get();
 		}
