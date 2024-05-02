@@ -1,6 +1,7 @@
 package com.example.peer.consulting.repository;
 
 import com.example.peer.consulting.entity.Consulting;
+import com.example.peer.consulting.entity.State;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 
@@ -57,6 +58,36 @@ public class ConsultingRepositoryImpl implements ConsultingRepositoryCustom{
                 .where(consulting.consultingDateTime.before(LocalDateTime.now()),
                         consulting.mentee.id.eq(id),
                         consulting.state.eq(ACCEPTED))
+                .fetch();
+    }
+
+    @Override
+    public List<Consulting> findPresentConsultingsByMentorIdAndState(Long id, State state) {
+        return jpaQueryFactory.selectFrom(consulting)
+                .leftJoin(consulting.mentee, user)
+                .fetchJoin()
+                .leftJoin(consulting.mentor, user)
+                .fetchJoin()
+                .leftJoin(consulting.mentor.mentorDetail, user.mentorDetail)
+                .fetchJoin()
+                .where(consulting.consultingDateTime.after(LocalDateTime.now()),
+                        consulting.mentor.id.eq(id),
+                        consulting.state.eq(state))
+                .fetch();
+    }
+
+    @Override
+    public List<Consulting> findPresentConsultingsByMenteeIdAndState(Long id, State state) {
+        return jpaQueryFactory.selectFrom(consulting)
+                .leftJoin(consulting.mentee, user)
+                .fetchJoin()
+                .leftJoin(consulting.mentor, user)
+                .fetchJoin()
+                .leftJoin(consulting.mentor.mentorDetail, user.mentorDetail)
+                .fetchJoin()
+                .where(consulting.consultingDateTime.after(LocalDateTime.now()),
+                        consulting.mentee.id.eq(id),
+                        consulting.state.eq(state))
                 .fetch();
     }
 }

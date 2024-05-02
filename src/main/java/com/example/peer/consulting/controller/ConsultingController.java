@@ -3,6 +3,7 @@ package com.example.peer.consulting.controller;
 import com.example.peer.consulting.dto.request.ConsultingRequest;
 import com.example.peer.consulting.dto.response.ConsultingDetailResponse;
 import com.example.peer.consulting.dto.response.ConsultingSummariesResponse;
+import com.example.peer.consulting.entity.State;
 import com.example.peer.consulting.service.ConsultingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -71,5 +72,71 @@ public class ConsultingController {
     ) {
         return ResponseEntity.ok()
                 .body(consultingService.ViewPastConsultingMentee(menteeId));
+    }
+
+    /*
+    멘토가 자신의 수락된 상담 내역을 조회
+     */
+    @GetMapping("/mentor/accepted")
+    public ResponseEntity<ConsultingSummariesResponse> ViewPresentAcceptedConsultingMentor(
+            Long mentorId
+    ) {
+        return ResponseEntity.ok()
+                .body(consultingService.ViewPresentConsultingMentor(mentorId, State.ACCEPTED));
+    }
+
+    /*
+    멘토가 자신의 대기중인 상담 내역을 조회
+     */
+    @GetMapping("/mentor/waiting")
+    public ResponseEntity<ConsultingSummariesResponse> ViewPresentWaitingConsultingMentor(
+            Long mentorId
+    ) {
+        return ResponseEntity.ok()
+                .body(consultingService.ViewPresentConsultingMentor(mentorId, State.WAITING));
+    }
+
+    /*
+    멘토가 자신의 거절된 상담 내역을 조회
+     */
+    @GetMapping("/mentor/rejected")
+    public ResponseEntity<ConsultingSummariesResponse> ViewPresentRejectedConsultingMentor(
+            Long mentorId
+    ) {
+        return ResponseEntity.ok()
+                .body(consultingService.ViewPresentConsultingMentor(mentorId, State.REJECTED));
+    }
+
+    /*
+    멘티가 자신의 수락된 상담 내역을 조회
+     */
+    @GetMapping("/mentee/accepted")
+    public ResponseEntity<ConsultingSummariesResponse> ViewPresentAcceptedConsultingMentee(
+            Long menteeId
+    ) {
+        return ResponseEntity.ok()
+                .body(consultingService.ViewPresentConsultingMentee(menteeId, State.ACCEPTED));
+    }
+
+    /*
+    멘티가 자신의 대기중인 상담 내역을 조회
+     */
+    @GetMapping("/mentee/waiting")
+    public ResponseEntity<ConsultingSummariesResponse> ViewPresentWaitingConsultingMentee(
+            Long menteeId
+    ) {
+        return ResponseEntity.ok()
+                .body(consultingService.ViewPresentConsultingMentee(menteeId, State.WAITING));
+    }
+
+    /*
+    멘티가 자신의 거절된 상담 내역을 조회
+     */
+    @GetMapping("/mentee/rejected")
+    public ResponseEntity<ConsultingSummariesResponse> ViewPresentRejectedConsultingMentee(
+            Long menteeId
+    ) {
+        return ResponseEntity.ok()
+                .body(consultingService.ViewPresentConsultingMentee(menteeId, State.REJECTED));
     }
 }

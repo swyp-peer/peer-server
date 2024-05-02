@@ -183,4 +183,32 @@ public class ConsultingService {
         }
         return consultingSummariesResponse;
     }
+
+    /*
+    멘토-자신의 진행 전인 상담 내역을 상태에 따라 조회
+     */
+    public ConsultingSummariesResponse ViewPresentConsultingMentor(Long mentorId, State state) {
+        ConsultingSummariesResponse consultingSummariesResponse = ConsultingSummariesResponse.builder().build();
+        for(Consulting consulting : consultingRepository.findPresentConsultingsByMentorIdAndState(mentorId, state)) {
+            consultingSummariesResponse.UpdateConsultingSummary(ConsultingSummary.builder().consulting(consulting)
+                    .mentorDetail(consulting.getMentor().getMentorDetail())
+                    .mentee(consulting.getMentee())
+                    .build());
+        }
+        return consultingSummariesResponse;
+    }
+
+    /*
+    멘티-자신의 진행 전인 상담 내역을 상태에 따라 조회
+     */
+    public ConsultingSummariesResponse ViewPresentConsultingMentee(Long menteeId, State state) {
+        ConsultingSummariesResponse consultingSummariesResponse = ConsultingSummariesResponse.builder().build();
+        for(Consulting consulting : consultingRepository.findPresentConsultingsByMenteeIdAndState(menteeId, state)) {
+            consultingSummariesResponse.UpdateConsultingSummary(ConsultingSummary.builder().consulting(consulting)
+                    .mentorDetail(consulting.getMentor().getMentorDetail())
+                    .mentee(consulting.getMentee())
+                    .build());
+        }
+        return consultingSummariesResponse;
+    }
 }
