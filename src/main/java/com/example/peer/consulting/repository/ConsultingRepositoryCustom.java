@@ -9,4 +9,5 @@ public interface ConsultingRepositoryCustom {
 
     List<LocalDateTime> findConsultingDateTimeByIsAccepted(Long id);
     List<Consulting> findPastConsultingsByMentorId(Long id);
+    List<Consulting> findPastConsultingsByMenteeId(Long id);
 }

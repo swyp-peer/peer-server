@@ -63,6 +63,13 @@ public class ConsultingController {
     }
 
     /*
-    
+    멘티가 자신의 지난 상담 내역들을 조회
      */
+    @GetMapping("/mentee/past")
+    public ResponseEntity<ConsultingSummariesResponse> ViewPastConsultingMentee(
+            Long menteeId
+    ) {
+        return ResponseEntity.ok()
+                .body(consultingService.ViewPastConsultingMentee(menteeId));
+    }
 }

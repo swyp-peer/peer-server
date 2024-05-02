@@ -44,4 +44,19 @@ public class ConsultingRepositoryImpl implements ConsultingRepositoryCustom{
                         consulting.state.eq(ACCEPTED))
                 .fetch();
     }
+
+    @Override
+    public List<Consulting> findPastConsultingsByMenteeId(Long id) {
+        return jpaQueryFactory.selectFrom(consulting)
+                .leftJoin(consulting.mentee, user)
+                .fetchJoin()
+                .leftJoin(consulting.mentor, user)
+                .fetchJoin()
+                .leftJoin(consulting.mentor.mentorDetail, user.mentorDetail)
+                .fetchJoin()
+                .where(consulting.consultingDateTime.before(LocalDateTime.now()),
+                        consulting.mentee.id.eq(id),
+                        consulting.state.eq(ACCEPTED))
+                .fetch();
+    }
 }

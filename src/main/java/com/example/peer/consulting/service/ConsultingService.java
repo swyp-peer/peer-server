@@ -169,4 +169,18 @@ public class ConsultingService {
         }
         return consultingSummariesResponse;
     }
+
+    /*
+    멘티-자신의 지난 상담 내역을 조회
+     */
+    public ConsultingSummariesResponse ViewPastConsultingMentee(Long menteeId) {
+        ConsultingSummariesResponse consultingSummariesResponse = ConsultingSummariesResponse.builder().build();
+        for(Consulting consulting : consultingRepository.findPastConsultingsByMenteeId(menteeId)) {
+            consultingSummariesResponse.UpdateConsultingSummary(ConsultingSummary.builder().consulting(consulting)
+                    .mentorDetail(consulting.getMentor().getMentorDetail())
+                    .mentee(consulting.getMentee())
+                    .build());
+        }
+        return consultingSummariesResponse;
+    }
 }
