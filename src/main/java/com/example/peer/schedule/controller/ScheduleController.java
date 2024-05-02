@@ -18,7 +18,7 @@ public class ScheduleController {
     /*
     멘토가 일정 규칙을 생성
      */
-    @PostMapping("/create")
+    @PostMapping("mentor/create")
     public ResponseEntity<ScheduleRuleResponse> CreateScheduleRule(
             ScheduleRuleRequest scheduleRuleRequest,
             Long mentorId
@@ -30,7 +30,7 @@ public class ScheduleController {
     /*
     멘토가 일정 규칙을 수정
      */
-    @PutMapping("/update")
+    @PutMapping("mentor/update")
     public ResponseEntity<ScheduleRuleResponse> UpdateScheduleRule(
             ScheduleRuleRequest scheduleRuleRequest,
             Long mentorId
@@ -42,9 +42,9 @@ public class ScheduleController {
     /*
     멘티가 멘토의 상담 가능 일정을 조회
      */
-    @GetMapping("/view")
+    @GetMapping("mentee/view/{mentorId}")
     public ResponseEntity<PossibleSchedulesResponse> ViewPossibleSchedules(
-            Long mentorId
+            @PathVariable("mentorId") Long mentorId
     ) {
         return ResponseEntity.ok()
                 .body(scheduleService.ViewPossibleSchedules(mentorId));

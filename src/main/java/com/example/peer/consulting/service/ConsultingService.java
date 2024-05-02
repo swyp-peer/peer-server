@@ -52,7 +52,7 @@ public class ConsultingService {
                         () -> new UserException(UserErrorCode.USER_NOT_FOUND)
                 ))
                 .consultingDateTime(consultingRequest.getConsultingDateTime())
-                .consultingDetail(ConsultingDetail.builder()
+                .consultingDetail(consultingDetailRepository.save(ConsultingDetail.builder()
                         .message(consultingRequest.getMessage())
                         .teamComposition(TeamComposition.builder()
                                 .managerCount(consultingRequest.getManagerCount())
@@ -60,7 +60,7 @@ public class ConsultingService {
                                 .frontendCount(consultingRequest.getFrontendCount())
                                 .backendCount(consultingRequest.getBackendCount())
                                 .build())
-                        .build())
+                        .build()))
                 .build());
         return ConsultingDetailResponse.builder()
                 .consulting(consulting)
