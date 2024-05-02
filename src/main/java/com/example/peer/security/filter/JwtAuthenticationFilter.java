@@ -3,23 +3,22 @@ package com.example.peer.security.filter;
 import java.io.IOException;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.peer.security.handler.AuthenticationExceptionHandler;
 import com.example.peer.security.utils.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -31,6 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		ServletException,
 		IOException {
 		// Get jwt token and validate
+		log.debug(">>JWTAuthenticationFilter DoFilterInternal Activated");
 		String token = resolveToken(request);
 		if (token != null && jwtTokenProvider.validateToken(token).equals("Valid")) {
 			Authentication authentication = jwtTokenProvider.getAuthentication(token);
@@ -54,6 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private String resolveToken(HttpServletRequest request) {
 		String bearerToken = request.getHeader("Authorization");
 		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
+			log.debug(">> resolved token by JwtAuthenticationFilter");
 			return bearerToken.substring(7);
 		}
 
