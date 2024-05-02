@@ -27,8 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 @EnableMethodSecurity
 @Slf4j
 public class SecurityConfig {
-	private final JwtTokenProvider jwtTokenProvider;
+
 	private final ObjectMapper objectMapper;
+	private final JwtTokenProvider jwtTokenProvider;
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() { // security를 적용하지 않을 리소스
@@ -36,16 +37,19 @@ public class SecurityConfig {
 			.requestMatchers("/error")
 			.requestMatchers("/oauth2/**");
 	}
+
 	@Bean
 	@Order(1)
 	SecurityFilterChain filterDefaultChain(HttpSecurity http) throws Exception {
 		log.debug(">> filterDefaultChain activated");
-		http.
-			securityMatcher("/**")
+		http
+			.csrf(csrf -> csrf.disable())
+			.securityMatcher("/**")
 			.authorizeHttpRequests(authorize -> authorize
 				// .requestMatchers("/oauth2/**").permitAll()
 				.anyRequest().authenticated());
-		http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, objectMapper), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, objectMapper),
+			UsernamePasswordAuthenticationFilter.class);
 
 		http.exceptionHandling(
 			exceptionHandler -> {
@@ -56,6 +60,7 @@ public class SecurityConfig {
 
 		return http.build();
 	}
+
 	// @Bean
 	// @Order(2)
 	// SecurityFilterChain loginFilterChain(HttpSecurity httpSecurity) throws Exception{

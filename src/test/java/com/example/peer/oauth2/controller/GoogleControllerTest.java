@@ -1,6 +1,5 @@
 package com.example.peer.oauth2.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -22,8 +21,9 @@ class GoogleControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 	private static final String base_mapping = "/oauth2/google";
+
 	@Test
-	@DisplayName("Kakao Redirect Test")
+	@DisplayName("Google Redirect Test")
 	void GoogleRedirectTest() throws Exception {
 		mockMvc.perform(get(base_mapping))
 			.andExpect(status().is3xxRedirection())

@@ -6,10 +6,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,9 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.example.peer.oauth2.entity.RefreshToken;
 import com.example.peer.security.entity.TokenInfo;
-// import com.example.peer.security.repository.RefreshTokenRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -32,7 +28,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -94,7 +89,6 @@ public class JwtTokenProvider {
 		return new UsernamePasswordAuthenticationToken(principal, "", authorities);
 	}
 
-
 	//토큰 정보를 검증하는 메서드
 	public String validateToken(String token) {
 		try {
@@ -122,8 +116,11 @@ public class JwtTokenProvider {
 			return e.getClaims();
 		}
 	}
+
 	public String resolveToken(String authorization) {
 		if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer")) {
+			log.debug(">> resolved token by JwtTokenProvider");
+
 			return authorization.substring(7);
 		}
 		return null;
