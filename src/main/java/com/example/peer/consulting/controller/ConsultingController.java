@@ -2,6 +2,7 @@ package com.example.peer.consulting.controller;
 
 import com.example.peer.consulting.dto.request.ConsultingRequest;
 import com.example.peer.consulting.dto.response.ConsultingDetailResponse;
+import com.example.peer.consulting.dto.response.ConsultingSummariesResponse;
 import com.example.peer.consulting.service.ConsultingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -49,4 +50,19 @@ public class ConsultingController {
         return ResponseEntity.ok()
                 .body(consultingService.RejectConsulting(consultingId, mentorId));
     }
+
+    /*
+    멘토가 자신의 지난 상담 내역들을 조회
+     */
+    @GetMapping("/mentor/past")
+    public ResponseEntity<ConsultingSummariesResponse> ViewPastConsultingMentor(
+            Long mentorId
+    ) {
+        return ResponseEntity.ok()
+                .body(consultingService.ViewPastConsultingMentor(mentorId));
+    }
+
+    /*
+    
+     */
 }

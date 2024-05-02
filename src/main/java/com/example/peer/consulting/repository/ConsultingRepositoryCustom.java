@@ -1,9 +1,12 @@
 package com.example.peer.consulting.repository;
 
+import com.example.peer.consulting.entity.Consulting;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ConsultingRepositoryCustom {
 
-    public List<LocalDateTime> findConsultingDateTimeByIsAccepted(Long id);
+    List<LocalDateTime> findConsultingDateTimeByIsAccepted(Long id);
+    List<Consulting> findPastConsultingsByMentorId(Long id);
 }

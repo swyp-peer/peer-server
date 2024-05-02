@@ -2,6 +2,8 @@ package com.example.peer.consulting.service;
 
 import com.example.peer.consulting.dto.request.ConsultingRequest;
 import com.example.peer.consulting.dto.response.ConsultingDetailResponse;
+import com.example.peer.consulting.dto.response.ConsultingSummariesResponse;
+import com.example.peer.consulting.dto.response.ConsultingSummary;
 import com.example.peer.consulting.entity.Consulting;
 import com.example.peer.consulting.entity.ConsultingDetail;
 import com.example.peer.consulting.entity.State;
@@ -152,5 +154,19 @@ public class ConsultingService {
                 .mentorDetail(consulting.getMentor().getMentorDetail())
                 .mentee(consulting.getMentee())
                 .build();
+    }
+
+    /*
+    멘토-자신의 지난 상담 내역을 조회
+     */
+    public ConsultingSummariesResponse ViewPastConsultingMentor(Long mentorId) {
+        ConsultingSummariesResponse consultingSummariesResponse = ConsultingSummariesResponse.builder().build();
+        for(Consulting consulting : consultingRepository.findPastConsultingsByMentorId(mentorId)) {
+            consultingSummariesResponse.UpdateConsultingSummary(ConsultingSummary.builder().consulting(consulting)
+                    .mentorDetail(consulting.getMentor().getMentorDetail())
+                    .mentee(consulting.getMentee())
+                    .build());
+        }
+        return consultingSummariesResponse;
     }
 }

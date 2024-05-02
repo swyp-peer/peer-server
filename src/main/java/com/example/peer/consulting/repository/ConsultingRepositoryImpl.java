@@ -1,5 +1,6 @@
 package com.example.peer.consulting.repository;
 
+import com.example.peer.consulting.entity.Consulting;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 
@@ -26,6 +27,21 @@ public class ConsultingRepositoryImpl implements ConsultingRepositoryCustom{
                 .where(consulting.mentor.id.eq(id),
                         consulting.state.eq(ACCEPTED),
                         consulting.consultingDateTime.after(LocalDateTime.now()))
+                .fetch();
+    }
+
+    @Override
+    public List<Consulting> findPastConsultingsByMentorId(Long id) {
+        return jpaQueryFactory.selectFrom(consulting)
+                .leftJoin(consulting.mentee, user)
+                .fetchJoin()
+                .leftJoin(consulting.mentor, user)
+                .fetchJoin()
+                .leftJoin(consulting.mentor.mentorDetail, user.mentorDetail)
+                .fetchJoin()
+                .where(consulting.consultingDateTime.before(LocalDateTime.now()),
+                        consulting.mentor.id.eq(id),
+                        consulting.state.eq(ACCEPTED))
                 .fetch();
     }
 }
