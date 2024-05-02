@@ -1,11 +1,9 @@
 package com.example.peer.oauth2.controller;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.peer.oauth2.entity.OAuth2UserInfo;
 import com.example.peer.oauth2.service.LoginService;
+import com.example.peer.security.entity.TokenInfo;
 import com.example.peer.security.service.UserDetailsServiceImpl;
 import com.example.peer.security.utils.JwtTokenProvider;
 import com.example.peer.user.entity.OauthType;
@@ -48,7 +47,8 @@ public class KakaoController {
 	}
 
 	@GetMapping("/callback")
-	public ResponseEntity kakaoLogin(@RequestParam("code") String code) {
+	public void kakaoLogin(HttpServletResponse response, @RequestParam("code") String code) throws
+		IOException {
 		OAuth2UserInfo oAuth2UserInfo = loginService.login(code, OauthType.KAKAO);
 		Optional<User> optionalUser = loginService.findUserByOauthUserInfo(oAuth2UserInfo);
 		User user = null;
@@ -57,9 +57,13 @@ public class KakaoController {
 		} else {
 			user = optionalUser.get();
 		}
-		Map<String, Object> claims = user.getClaims();
-		claims.put("TokenInfo", jwtTokenProvider.generateToken(userDetailsService.loadUserById(user.getId())));
-		return ResponseEntity.ok().body(claims);
+		TokenInfo tokenInfo = jwtTokenProvider.generateToken(userDetailsService.loadUserById(user.getId()));
+		String uriString = UriComponentsBuilder
+			.fromUriString("https://localhost:3000/oauth/callback")
+			.toUriString();
+		response.addHeader("AccessToken", tokenInfo.getAccessToken());
+		response.addHeader("RefreshToken", tokenInfo.getRefreshToken());
+		response.sendRedirect(uriString);
 	}
 
 }
