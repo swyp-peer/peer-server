@@ -22,4 +22,7 @@ public class Keyword {
 	public Keyword(String keyword) {
 		this.keyword = keyword;
 	}
+	/*
+	키워드는 사전 생성해서 넣어놓고 추후에 생성자를 닫아야함.
+	 */
 }

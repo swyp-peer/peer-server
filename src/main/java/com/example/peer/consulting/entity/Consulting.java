@@ -1,13 +1,14 @@
 package com.example.peer.consulting.entity;
 
 import com.example.peer.common.domain.BaseTimeEntity;
-import com.example.peer.schedule.entity.Schedule;
 import com.example.peer.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -29,19 +30,17 @@ public class Consulting extends BaseTimeEntity {
     @JoinColumn(referencedColumnName = "user_id", name = "mentee_id")
     private User mentee;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id")
-    private Schedule schedule;
+    private LocalDateTime consultingDateTime;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "consulting_detail_id")
     private ConsultingDetail consultingDetail;
 
     @Builder
-    public Consulting(User mentor, User mentee, Schedule schedule, ConsultingDetail consultingDetail) {
+    public Consulting(User mentor, User mentee, LocalDateTime consultingDateTime, ConsultingDetail consultingDetail) {
         this.mentor = mentor;
         this.mentee = mentee;
-        this.schedule = schedule;
+        this.consultingDateTime = consultingDateTime;
         this.consultingDetail = consultingDetail;
         this.isAccepted = Boolean.FALSE;
     }

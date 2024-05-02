@@ -1,5 +1,6 @@
 package com.example.peer.user.entity;
 
+import com.example.peer.schedule.entity.ScheduleRule;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,6 +31,10 @@ public class MentorDetail {
 	@OneToMany(mappedBy = "mentorDetail")
 	private List<KeywordMentorDetail> keywordMentorDetails = new ArrayList<>();
 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "schedule_create_rule_id")
+	private ScheduleRule scheduleRule;
+
 	@Builder
 	public MentorDetail(String nickname, String position, String introduction) {
 		this.nickname = nickname;
@@ -40,5 +45,9 @@ public class MentorDetail {
 
 	public void UpdateIsAccepted(Boolean isAccepted) {
 		this.isAccepted = isAccepted;
+	}
+
+	public void UpdateScheduleRule(ScheduleRule scheduleRule) {
+		this.scheduleRule = scheduleRule;
 	}
 }
