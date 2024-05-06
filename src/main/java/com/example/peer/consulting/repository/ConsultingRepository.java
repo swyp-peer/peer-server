@@ -9,6 +9,5 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface ConsultingRepository extends JpaRepository<Consulting, Long> , ConsultingRepositoryCustom{
-    Optional<Consulting> findByConsultingDateTimeAndMentorId(LocalDateTime consultingDateTime, Long id);
     Optional<Consulting> findByConsultingDateTimeAndMentorIdAndState(LocalDateTime consultingDateTime, Long id, State state);
 }
