@@ -41,9 +41,17 @@ public class ConsultingService {
      */
     @Transactional
     public ConsultingDetailResponse CreateConsulting(ConsultingRequest consultingRequest, Long menteeId) {
+        //멘티 전화번호 업데이트
+        userRepository.findById(menteeId).orElseThrow(
+                () -> new UserException(UserErrorCode.USER_NOT_FOUND)
+        ).UpdatePhoneNumber(consultingRequest.getPhoneNumber());
+
+        //상담시간이 유효한지 체크
         if(!checkValidationConsultingDateTime(consultingRequest.getConsultingDateTime(), consultingRequest.getMentorId())) {
             throw new ConsultingException(ConsultingErrorCode.CANNOT_REQUEST_CONSULTING_DURING_THIS_SCHEDULE);
         }
+
+        //상담 생성
         Consulting consulting = consultingRepository.save(Consulting.builder()
                 .mentor(userRepository.findById(consultingRequest.getMentorId()).orElseThrow(
                         () -> new UserException(UserErrorCode.USER_NOT_FOUND)

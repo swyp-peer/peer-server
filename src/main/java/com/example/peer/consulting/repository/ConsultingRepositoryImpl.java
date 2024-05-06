@@ -43,6 +43,7 @@ public class ConsultingRepositoryImpl implements ConsultingRepositoryCustom{
                 .where(consulting.consultingDateTime.before(LocalDateTime.now()),
                         consulting.mentor.id.eq(id),
                         consulting.state.eq(ACCEPTED))
+                .orderBy(consulting.consultingDateTime.desc())
                 .fetch();
     }
 
@@ -58,6 +59,7 @@ public class ConsultingRepositoryImpl implements ConsultingRepositoryCustom{
                 .where(consulting.consultingDateTime.before(LocalDateTime.now()),
                         consulting.mentee.id.eq(id),
                         consulting.state.eq(ACCEPTED))
+                .orderBy(consulting.consultingDateTime.desc())
                 .fetch();
     }
 
@@ -73,6 +75,7 @@ public class ConsultingRepositoryImpl implements ConsultingRepositoryCustom{
                 .where(consulting.consultingDateTime.after(LocalDateTime.now()),
                         consulting.mentor.id.eq(id),
                         consulting.state.eq(state))
+                .orderBy(consulting.consultingDateTime.asc())
                 .fetch();
     }
 
@@ -88,6 +91,7 @@ public class ConsultingRepositoryImpl implements ConsultingRepositoryCustom{
                 .where(consulting.consultingDateTime.after(LocalDateTime.now()),
                         consulting.mentee.id.eq(id),
                         consulting.state.eq(state))
+                .orderBy(consulting.consultingDateTime.asc())
                 .fetch();
     }
 }

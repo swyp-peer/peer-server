@@ -1,6 +1,7 @@
 package com.example.peer.consulting.dto.response;
 
 import com.example.peer.consulting.entity.Consulting;
+import com.example.peer.consulting.entity.State;
 import com.example.peer.user.entity.MentorDetail;
 import com.example.peer.user.entity.User;
 import lombok.AccessLevel;
@@ -22,11 +23,14 @@ public class ConsultingSummary {
 
     private String mentorNickname;
 
+    private State state;
+
     @Builder
     public ConsultingSummary(Consulting consulting, MentorDetail mentorDetail, User mentee) {
         this.id = consulting.getId();
         this.consultingDateTime = consulting.getConsultingDateTime();
         this.menteeName = mentee.getName();
         this.mentorNickname = mentorDetail.getNickname();
+        this.state = consulting.getState();
     }
 }
