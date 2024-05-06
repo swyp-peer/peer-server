@@ -77,7 +77,7 @@ public class ConsultingController {
     }
 
     /*
-    멘토가 자신의 지난 상담 내역들을 조회
+    멘토가 자신의 과거 상담 리스트 조회
      */
     @GetMapping("/mentor/past")
     public ResponseEntity<ConsultingSummariesResponse> ViewPastConsultingMentor(
@@ -88,7 +88,7 @@ public class ConsultingController {
     }
 
     /*
-    멘티가 자신의 지난 상담 내역들을 조회
+    멘티가 자신의 과거 상담 리스트 조회
      */
     @GetMapping("/mentee/past")
     public ResponseEntity<ConsultingSummariesResponse> ViewPastConsultingMentee(
@@ -99,7 +99,7 @@ public class ConsultingController {
     }
 
     /*
-    멘토가 자신의 수락된 진행전 상담 내역을 조회
+    멘토가 자신의 수락된 진행 예정 상담 리스트 조회
      */
     @GetMapping("/mentor/accepted")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentAcceptedConsultingMentor(
@@ -110,7 +110,7 @@ public class ConsultingController {
     }
 
     /*
-    멘토가 자신의 대기중인 진행전 상담 내역을 조회
+    멘토가 자신의 대기중 진행 예정 상담 리스트 조회
      */
     @GetMapping("/mentor/waiting")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentWaitingConsultingMentor(
@@ -121,7 +121,7 @@ public class ConsultingController {
     }
 
     /*
-    멘토가 자신의 거절된 진행전 상담 내역을 조회
+    멘토가 자신의 거절된 진행 예정 상담 리스트 조회
      */
     @GetMapping("/mentor/rejected")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentRejectedConsultingMentor(
@@ -132,7 +132,7 @@ public class ConsultingController {
     }
 
     /*
-    멘티가 자신의 수락된 진행전 상담 내역을 조회
+    멘티가 자신의 수락된 진행 예정 상담 리스트 조회
      */
     @GetMapping("/mentee/accepted")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentAcceptedConsultingMentee(
@@ -143,7 +143,7 @@ public class ConsultingController {
     }
 
     /*
-    멘티가 자신의 대기중인 진행전 상담 내역을 조회
+    멘티가 자신의 대기중 진행 예정 상담 리스트 조회
      */
     @GetMapping("/mentee/waiting")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentWaitingConsultingMentee(
@@ -154,7 +154,7 @@ public class ConsultingController {
     }
 
     /*
-    멘티가 자신의 거절된 진행전 상담 내역을 조회
+    멘티가 자신의 거절된 진행 예정 상담 리스트 조회
      */
     @GetMapping("/mentee/rejected")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentRejectedConsultingMentee(

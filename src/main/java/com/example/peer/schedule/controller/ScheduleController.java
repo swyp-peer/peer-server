@@ -30,7 +30,7 @@ public class ScheduleController {
     /*
     멘토가 일정 규칙을 수정
      */
-    @PutMapping("/mentor/update")
+    @PatchMapping("/mentor/update")
     public ResponseEntity<ScheduleRuleResponse> UpdateScheduleRule(
             ScheduleRuleRequest scheduleRuleRequest,
             Long mentorId

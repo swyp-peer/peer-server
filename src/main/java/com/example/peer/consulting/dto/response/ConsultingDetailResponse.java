@@ -6,6 +6,7 @@ import com.example.peer.consulting.entity.State;
 import com.example.peer.consulting.entity.TeamComposition;
 import com.example.peer.user.entity.MentorDetail;
 import com.example.peer.user.entity.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class ConsultingDetailResponse {
 
     private Long id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime consultingDateTime;
 
     private String message;
