@@ -71,12 +71,26 @@ public class ScheduleService {
                 .build();
     }
 
+    /*
+    멘토-자신의 일정 규칙을 조회
+     */
+    public ScheduleRuleResponse ViewScheduleRule(Long mentorId) {
+        return ScheduleRuleResponse.builder()
+                .scheduleRule(scheduleRuleRepository.findByMentorDetail(userRepository.findById(mentorId)
+                                .orElseThrow(
+                                        () -> new UserException(UserErrorCode.USER_NOT_FOUND)
+                                ).getMentorDetail())
+                        .orElseThrow(
+                                () -> new UserException(UserErrorCode.MENTOR_DETAIL_NOT_FOUND)
+                        ))
+                .build();
+    }
+
 
     /*
     멘티-일정 규칙을 참고해 멘토의 새로운 상담 가능 일정 조회
         다음날부터 2주치의 상담 가능 일정 조회
      */
-    @Transactional
     public PossibleSchedulesResponse ViewPossibleSchedules(Long mentorId) {
         List<LocalDateTime> possibleSchedules = new ArrayList<>();
         ScheduleRule scheduleRule = scheduleRuleRepository.findByMentorDetail(userRepository.findById(mentorId)

@@ -90,6 +90,7 @@ public class ConsultingService {
         );
         if (DaytoScheduleRule(consultingDateTime.getDayOfWeek().getValue(), findScheduleRule).contains(consultingDateTime.toLocalTime())
                 &&consultingDateTime.isAfter(LocalDateTime.now())
+                &&consultingDateTime.isBefore(LocalDateTime.now().plusDays(16))
                 &&consultingRepository.findByConsultingDateTimeAndMentorIdAndState(consultingDateTime, mentorId, State.ACCEPTED).isEmpty()) {
             return true;
         }
@@ -168,7 +169,8 @@ public class ConsultingService {
             throw new ConsultingException(ConsultingErrorCode.CANNOT_ACCESS_CONSULTING);
         }
         if(consultingRepository.findByConsultingDateTimeAndMentorIdAndState(consulting.getConsultingDateTime(), mentorId, State.ACCEPTED).isPresent()
-                || consulting.getConsultingDateTime().isBefore(LocalDateTime.now())) {
+                || consulting.getConsultingDateTime().isBefore(LocalDateTime.now())
+                || consulting.getConsultingDateTime().isAfter(LocalDateTime.now().plusDays(16))) {
             throw new ConsultingException(ConsultingErrorCode.CANNOT_CONSULT_DURING_THIS_SCHEDULE);
         }
         consulting.UpdateState(State.ACCEPTED);
