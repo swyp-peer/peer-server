@@ -19,8 +19,20 @@ public class UserDto {
     @JsonProperty("email")
     private String email;
 
+    @JsonProperty("role")
+    private String role;
+
+    @JsonProperty("phone_number")
+    private String phone_number;
+
     @JsonProperty("profileImageUrl")
     private String profileImageUrl;
+
+    @JsonProperty("created_date")
+    private String created_date;
+    
+    @JsonProperty("modified_date")
+    private String modified_date;
     // 기타 필드 추가
 
     public UserDto(User user) {
