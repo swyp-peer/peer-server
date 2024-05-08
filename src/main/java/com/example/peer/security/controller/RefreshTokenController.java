@@ -6,7 +6,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,8 +27,10 @@ public class RefreshTokenController {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final UserDetailsServiceImpl userDetailsService;
 	private static final Logger logger = LoggerFactory.getLogger(RefreshTokenController.class);
+
 	@PostMapping("/token/refresh")
-	public ResponseEntity tokenRefresh(@RequestHeader("Authorization") String authorization, @RequestBody String refreshToken) {
+	public ResponseEntity tokenRefresh(@RequestHeader("Authorization") String authorization,
+		@RequestBody String refreshToken) {
 		String accessToken = jwtTokenProvider.resolveToken(authorization);
 
 		logger.info("access token = {}, refresh Token = {}", accessToken, refreshToken);
@@ -42,13 +43,13 @@ public class RefreshTokenController {
 
 		// Access Token 만료 여부 확인
 		if (jwtTokenProvider.validateToken(accessToken).equals("Expired")) {
-			if (jwtTokenProvider.validateToken(refreshToken).equals("Expired")){
+			if (jwtTokenProvider.validateToken(refreshToken).equals("Expired")) {
 				throw new SecurityException(SecurityErrorCode.REFRESH_TOKEN_EXPIRED);
-			}
-			else{
+			} else {
 				Claims claims = jwtTokenProvider.parseClaims(accessToken);
 
-				TokenInfo tokenInfo = jwtTokenProvider.generateToken(userDetailsService.loadUserById(Long.valueOf(claims.get("id").toString())));
+				TokenInfo tokenInfo = jwtTokenProvider.generateToken(
+					userDetailsService.loadUserById(Long.valueOf(claims.getSubject())));
 				accessToken = tokenInfo.getAccessToken();
 				refreshToken = tokenInfo.getRefreshToken();
 			}
