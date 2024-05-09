@@ -1,6 +1,7 @@
 package com.example.peer.schedule.dto.response;
 
 import com.example.peer.schedule.entity.ScheduleRule;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,18 +14,25 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ScheduleRuleResponse {
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm")
     private List<LocalTime> mondayScheduleRule;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm")
     private List<LocalTime> tuesdayScheduleRule;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm")
     private List<LocalTime> wednesdayScheduleRule;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm")
     private List<LocalTime> thursdayScheduleRule;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm")
     private List<LocalTime> fridayScheduleRule;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm")
     private List<LocalTime> saturdayScheduleRule;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm")
     private List<LocalTime> sundayScheduleRule;
 
     @Builder

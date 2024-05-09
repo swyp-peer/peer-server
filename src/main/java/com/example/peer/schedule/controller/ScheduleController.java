@@ -6,10 +6,7 @@ import com.example.peer.schedule.dto.response.ScheduleRuleResponse;
 import com.example.peer.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,7 +18,7 @@ public class ScheduleController {
     /*
     멘토가 일정 규칙을 생성
      */
-    @PostMapping("/create")
+    @PostMapping("/mentor/create")
     public ResponseEntity<ScheduleRuleResponse> CreateScheduleRule(
             ScheduleRuleRequest scheduleRuleRequest,
             Long mentorId
@@ -33,7 +30,7 @@ public class ScheduleController {
     /*
     멘토가 일정 규칙을 수정
      */
-    @PostMapping("/update")
+    @PatchMapping("/mentor/update")
     public ResponseEntity<ScheduleRuleResponse> UpdateScheduleRule(
             ScheduleRuleRequest scheduleRuleRequest,
             Long mentorId
@@ -43,11 +40,22 @@ public class ScheduleController {
     }
 
     /*
+    멘토가 자신의 일정 규칙을 조회
+     */
+    @GetMapping("/mentor/view")
+    public ResponseEntity<ScheduleRuleResponse> ViewMyScheduleRule(
+        Long mentorId
+    ) {
+        return ResponseEntity.ok()
+                .body(scheduleService.ViewScheduleRule(mentorId));
+    }
+
+    /*
     멘티가 멘토의 상담 가능 일정을 조회
      */
-    @GetMapping("/view")
+    @GetMapping("/mentee/view/{mentorId}")
     public ResponseEntity<PossibleSchedulesResponse> ViewPossibleSchedules(
-            Long mentorId
+            @PathVariable("mentorId") Long mentorId
     ) {
         return ResponseEntity.ok()
                 .body(scheduleService.ViewPossibleSchedules(mentorId));

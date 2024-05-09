@@ -20,7 +20,7 @@ public class Consulting extends BaseTimeEntity {
     @Column(name = "consulting_id")
     private Long id;
 
-    private Boolean isAccepted;
+    private State state;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "user_id", name = "mentor_id")
@@ -42,6 +42,10 @@ public class Consulting extends BaseTimeEntity {
         this.mentee = mentee;
         this.consultingDateTime = consultingDateTime;
         this.consultingDetail = consultingDetail;
-        this.isAccepted = Boolean.FALSE;
+        this.state = State.WAITING;
+    }
+
+    public void UpdateState(State state) {
+        this.state = state;
     }
 }
