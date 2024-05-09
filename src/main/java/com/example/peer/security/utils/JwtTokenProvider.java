@@ -35,9 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtTokenProvider {
 	private final Key key;
 
-	// @Autowired
-	// RefreshTokenRepository refreshTokenRepository;
-
 	//    // 유저 정보를 가지고 AccessToken, RefreshToken 을 생성하는 메서드
 	public JwtTokenProvider(@Value("${spring.security.jwt.secret-key}") String secretKey) {
 		byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -48,7 +45,7 @@ public class JwtTokenProvider {
 		String authorities = user.getAuthorities().stream()
 			.map(GrantedAuthority::getAuthority)
 			.collect(Collectors.joining(","));
-
+		log.debug(">> creating token with username {}", user.getUsername());
 		String accessToken = Jwts.builder()
 			.setSubject(user.getUsername())
 			.claim("auth", authorities)
