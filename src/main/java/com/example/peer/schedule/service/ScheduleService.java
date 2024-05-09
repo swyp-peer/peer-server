@@ -86,7 +86,6 @@ public class ScheduleService {
                 .build();
     }
 
-
     /*
     멘티-일정 규칙을 참고해 멘토의 새로운 상담 가능 일정 조회
         다음날부터 2주치의 상담 가능 일정 조회
