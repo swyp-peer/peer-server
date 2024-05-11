@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MentorSummary {
+public class MentorForMenteeResponse {
 
     private Long mentorId;
 
@@ -20,13 +20,16 @@ public class MentorSummary {
 
     private String position;
 
+    private String introduction;
+
     private List<Keyword> keywords;
 
     @Builder
-    public MentorSummary(User mentor, MentorDetail mentorDetail) {
+    public MentorForMenteeResponse(User mentor, MentorDetail mentorDetail) {
         this.mentorId = mentor.getId();
         this.nickname = mentorDetail.getNickname();
         this.position = mentorDetail.getPosition();
+        this.introduction = mentorDetail.getIntroduction();
         this.keywords = mentorDetail.getKeywords();
     }
 }
