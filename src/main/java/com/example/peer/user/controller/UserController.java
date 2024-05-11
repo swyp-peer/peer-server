@@ -3,6 +3,7 @@ package com.example.peer.user.controller;
 import com.example.peer.user.dto.request.MentorDetailRequest;
 import com.example.peer.user.dto.response.MenteeDetailResponse;
 import com.example.peer.user.dto.response.MentorDetailResponse;
+import com.example.peer.user.dto.response.MentorSummariesResponse;
 import com.example.peer.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -64,5 +65,16 @@ public class UserController {
                 .body(userService.ViewMenteeDetail(menteeId));
     }
 
-    
+    /*
+    멘티가 승인받은 멘토의 리스트 조회
+     */
+    @GetMapping("/mentee/mentorlist")
+    public ResponseEntity<MentorSummariesResponse> ViewAcceptedMentorList(
+            Long menteeId
+    ) {
+        return ResponseEntity.ok()
+                .body(userService.ViewAcceptedMentorList(menteeId));
+    }
+
+
 }

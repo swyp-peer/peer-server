@@ -3,6 +3,8 @@ package com.example.peer.user.service;
 import com.example.peer.user.dto.request.MentorDetailRequest;
 import com.example.peer.user.dto.response.MenteeDetailResponse;
 import com.example.peer.user.dto.response.MentorDetailResponse;
+import com.example.peer.user.dto.response.MentorSummariesResponse;
+import com.example.peer.user.dto.response.MentorSummary;
 import com.example.peer.user.entity.Keyword;
 import com.example.peer.user.entity.MentorDetail;
 import com.example.peer.user.entity.User;
@@ -91,5 +93,20 @@ public class UserService {
                         () -> new UserException(UserErrorCode.USER_NOT_FOUND)
                 ))
                 .build();
+    }
+
+    /*
+    멘티-승인된 멘토 리스트 조회
+     */
+    public MentorSummariesResponse ViewAcceptedMentorList(Long menteeId) {
+        MentorSummariesResponse mentorSummariesResponse = MentorSummariesResponse.builder().build();
+        for (MentorDetail mentorDetail : mentorDetailRepository.findByIsAccepted(Boolean.TRUE)) {
+            mentorSummariesResponse.UpdateMentorSummary(MentorSummary.builder()
+                    .nickname(mentorDetail.getNickname())
+                    .position(mentorDetail.getPosition())
+                    .keywords(mentorDetail.getKeywords())
+                    .build());
+        }
+        return mentorSummariesResponse;
     }
 }
