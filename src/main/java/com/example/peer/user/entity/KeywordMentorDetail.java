@@ -27,16 +27,11 @@ public class KeywordMentorDetail {
 	@JoinColumn(name = "mentor_detail_id")
 	private MentorDetail mentorDetail;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "keyword_id")
 	private Keyword keyword;
 
 	@Builder
-	public KeywordMentorDetail(Keyword keyword) {
+	public KeywordMentorDetail(Keyword keyword, MentorDetail mentorDetail) {
 		this.keyword = keyword;
-	}
-
-	public void UpdateMentorDetail(MentorDetail mentorDetail) {
 		this.mentorDetail = mentorDetail;
 		//==연관관계 메서드==//
 		mentorDetail.getKeywordMentorDetails().add(this);
