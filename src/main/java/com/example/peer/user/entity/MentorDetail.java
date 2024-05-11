@@ -28,6 +28,8 @@ public class MentorDetail {
 
 	private Boolean isAccepted;
 
+	private String openTalkLink;
+
 	@OneToMany(mappedBy = "mentorDetail")
 	private List<KeywordMentorDetail> keywordMentorDetails = new ArrayList<>();
 
@@ -36,10 +38,11 @@ public class MentorDetail {
 	private ScheduleRule scheduleRule;
 
 	@Builder
-	public MentorDetail(String nickname, String position, String introduction) {
+	public MentorDetail(String nickname, String position, String introduction, String openTalkLink) {
 		this.nickname = nickname;
 		this.position = position;
 		this.introduction = introduction;
+		this.openTalkLink = openTalkLink;
 		this.isAccepted = Boolean.FALSE;
 	}
 
