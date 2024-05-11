@@ -43,7 +43,7 @@ public class MentorDetail {
 		this.position = position;
 		this.introduction = introduction;
 		this.openTalkLink = openTalkLink;
-		this.isAccepted = Boolean.FALSE;
+		this.isAccepted = Boolean.TRUE;
 	}
 
 	public void UpdateIsAccepted(Boolean isAccepted) {

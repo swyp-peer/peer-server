@@ -13,8 +13,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MentorDetailResponse {
 
-    private Long mentorDetailId;
-
     private Long mentorId;
 
     private String name;
@@ -41,7 +39,6 @@ public class MentorDetailResponse {
         this.name = mentor.getName();
         this.email = mentor.getEmail();
         this.phoneNumber = mentor.getPhoneNumber();
-        this.mentorDetailId = mentorDetail.getId();
         this.nickname = mentorDetail.getNickname();
         this.position = mentorDetail.getPosition();
         this.introduction = mentorDetail.getIntroduction();
