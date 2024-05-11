@@ -32,7 +32,7 @@ public class UserService {
     oauth를 통해 user에는 이미 저장 가정
      */
     @Transactional
-    public MentorDetailResponse createMentorDetail(MentorDetailRequest mentorDetailRequest, Long mentorId) {
+    public MentorDetailResponse CreateMentorDetail(MentorDetailRequest mentorDetailRequest, Long mentorId) {
         MentorDetail mentorDetail = mentorDetailRepository.save(MentorDetail.builder()
                 .nickname(mentorDetailRequest.getNickname())
                 .position(mentorDetailRequest.getPosition())
@@ -59,6 +59,21 @@ public class UserService {
     }
 
     /*
-    멘토 승인과정 -> 추후에 관리자 페이지 도입시 추가
+    멘토-승인과정 -> 추후에 관리자 페이지 도입시 추가
      */
+
+    /*
+    멘토-멘토 상세 조회
+     */
+    public MentorDetailResponse ViewMentorDetail(Long mentorId) {
+        User mentor = userRepository.findById(mentorId).orElseThrow(
+                () -> new UserException(UserErrorCode.USER_NOT_FOUND)
+        );
+        return MentorDetailResponse.builder()
+                .mentorDetail(mentor.getMentorDetail())
+                .mentor(mentor)
+                .keywordMentorDetails(mentor.getMentorDetail().getKeywordMentorDetails())
+                .build();
+    }
+
 }
