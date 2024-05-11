@@ -1,6 +1,7 @@
 package com.example.peer.user.controller;
 
 import com.example.peer.user.dto.request.MentorDetailRequest;
+import com.example.peer.user.dto.response.MenteeDetailResponse;
 import com.example.peer.user.dto.response.MentorDetailResponse;
 import com.example.peer.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -51,4 +52,17 @@ public class UserController {
         return ResponseEntity.ok()
                 .body(userService.UpdateMentorDetail(mentorDetailRequest, mentorId));
     }
+
+    /*
+    멘티 상세 조회
+     */
+    @GetMapping("/mentee/view")
+    public ResponseEntity<MenteeDetailResponse> ViewMenteeDetail(
+            Long menteeId
+    ) {
+        return ResponseEntity.ok()
+                .body(userService.ViewMenteeDetail(menteeId));
+    }
+
+    
 }

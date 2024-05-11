@@ -1,6 +1,7 @@
 package com.example.peer.user.service;
 
 import com.example.peer.user.dto.request.MentorDetailRequest;
+import com.example.peer.user.dto.response.MenteeDetailResponse;
 import com.example.peer.user.dto.response.MentorDetailResponse;
 import com.example.peer.user.entity.Keyword;
 import com.example.peer.user.entity.MentorDetail;
@@ -78,6 +79,17 @@ public class UserService {
         return MentorDetailResponse.builder()
                 .mentorDetail(mentor.getMentorDetail())
                 .mentor(mentor)
+                .build();
+    }
+
+    /*
+    멘티-멘티 상세 조회
+     */
+    public MenteeDetailResponse ViewMenteeDetail(Long menteeId) {
+        return MenteeDetailResponse.builder()
+                .mentee(userRepository.findById(menteeId).orElseThrow(
+                        () -> new UserException(UserErrorCode.USER_NOT_FOUND)
+                ))
                 .build();
     }
 }
