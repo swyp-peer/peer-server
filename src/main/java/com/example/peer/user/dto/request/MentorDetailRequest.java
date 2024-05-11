@@ -24,13 +24,16 @@ public class MentorDetailRequest {
 
     private List<Keyword> keywords;
 
+    private String phoneNumber;
+
     @Builder
-    public MentorDetailRequest(String nickname, String position, String introduction, Boolean isAccepted, String openTalkLink, List<Keyword> keywords) {
+    public MentorDetailRequest(String nickname, String position, String introduction, Boolean isAccepted, String openTalkLink, List<Keyword> keywords, String phoneNumber) {
         this.nickname = nickname;
         this.position = position;
         this.introduction = introduction;
         this.isAccepted = isAccepted;
         this.openTalkLink = openTalkLink;
         this.keywords = keywords;
+        this.phoneNumber = phoneNumber;
     }
 }

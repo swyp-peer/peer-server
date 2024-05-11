@@ -3,12 +3,10 @@ package com.example.peer.user.service;
 import com.example.peer.user.dto.request.MentorDetailRequest;
 import com.example.peer.user.dto.response.MentorDetailResponse;
 import com.example.peer.user.entity.Keyword;
-import com.example.peer.user.entity.KeywordMentorDetail;
 import com.example.peer.user.entity.MentorDetail;
 import com.example.peer.user.entity.User;
 import com.example.peer.user.exception.UserErrorCode;
 import com.example.peer.user.exception.UserException;
-import com.example.peer.user.repository.KeywordMentorDetailRepository;
 import com.example.peer.user.repository.MentorDetailRepository;
 import com.example.peer.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +23,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final MentorDetailRepository mentorDetailRepository;
-    private final KeywordMentorDetailRepository keywordMentorDetailRepository;
 
     /*
     멘토-새로운 멘토 등록
@@ -38,15 +35,8 @@ public class UserService {
                 .position(mentorDetailRequest.getPosition())
                 .introduction(mentorDetailRequest.getIntroduction())
                 .openTalkLink(mentorDetailRequest.getOpenTalkLink())
+                        .keywords(mentorDetailRequest.getKeywords())
                 .build());
-        List<KeywordMentorDetail> keywordMentorDetails = new ArrayList<>();
-        for(Keyword keyword : mentorDetailRequest.getKeywords()){
-            keywordMentorDetails.add(keywordMentorDetailRepository.save(KeywordMentorDetail.builder()
-                    .mentorDetail(mentorDetail)
-                    .keyword(keyword)
-                    .build()));
-
-        }
         User mentor = userRepository.findById(mentorId).orElseThrow(
                 () -> new UserException(UserErrorCode.USER_NOT_FOUND)
         );
@@ -54,7 +44,6 @@ public class UserService {
         return MentorDetailResponse.builder()
                 .mentorDetail(mentorDetail)
                 .mentor(mentor)
-                .keywordMentorDetails(keywordMentorDetails)
                 .build();
     }
 
@@ -72,8 +61,23 @@ public class UserService {
         return MentorDetailResponse.builder()
                 .mentorDetail(mentor.getMentorDetail())
                 .mentor(mentor)
-                .keywordMentorDetails(mentor.getMentorDetail().getKeywordMentorDetails())
                 .build();
     }
 
+    /*
+    멘토-멘토 상세 수정
+     */
+    @Transactional
+    public MentorDetailResponse UpdateMentorDetail(MentorDetailRequest mentorDetailRequest, Long mentorId) {
+        User mentor = userRepository.findById(mentorId).orElseThrow(
+                () -> new UserException(UserErrorCode.USER_NOT_FOUND)
+        );
+        mentor.UpdatePhoneNumber(mentorDetailRequest.getPhoneNumber());
+        mentor.getMentorDetail().UpdateMentorDetail(mentorDetailRequest.getNickname(), mentorDetailRequest.getPosition(), mentorDetailRequest.getIntroduction(),
+                mentorDetailRequest.getOpenTalkLink(), mentorDetailRequest.getKeywords());
+        return MentorDetailResponse.builder()
+                .mentorDetail(mentor.getMentorDetail())
+                .mentor(mentor)
+                .build();
+    }
 }

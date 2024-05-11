@@ -34,7 +34,7 @@ public class MentorDetailResponse {
     private List<Keyword> keywords;
 
     @Builder
-    public MentorDetailResponse(User mentor, MentorDetail mentorDetail, List<KeywordMentorDetail> keywordMentorDetails) {
+    public MentorDetailResponse(User mentor, MentorDetail mentorDetail) {
         this.mentorId = mentor.getId();
         this.name = mentor.getName();
         this.email = mentor.getEmail();
@@ -44,9 +44,6 @@ public class MentorDetailResponse {
         this.introduction = mentorDetail.getIntroduction();
         this.isAccepted = mentorDetail.getIsAccepted();
         this.openTalkLink = mentorDetail.getOpenTalkLink();
-        this.keywords = new ArrayList<>();
-        for(KeywordMentorDetail keywordMentorDetail : keywordMentorDetails){
-            this.keywords.add(keywordMentorDetail.getKeyword());
-        }
+        this.keywords = mentorDetail.getKeywords();
     }
 }

@@ -39,4 +39,16 @@ public class UserController {
         return ResponseEntity.ok()
                 .body(userService.ViewMentorDetail(mentorId));
     }
+
+    /*
+    멘토 상세 정보 수정
+     */
+    @PostMapping("/mentor/update")
+    public ResponseEntity<MentorDetailResponse> UpdateMentorDetail(
+            MentorDetailRequest mentorDetailRequest,
+            Long mentorId
+    ){
+        return ResponseEntity.ok()
+                .body(userService.UpdateMentorDetail(mentorDetailRequest, mentorId));
+    }
 }
