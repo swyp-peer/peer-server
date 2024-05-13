@@ -17,6 +17,8 @@ public class ConsultingRequest {
 
     private String message;
 
+    private String menteePosition;
+
     private int managerCount;
 
     private int designerCount;
@@ -30,9 +32,10 @@ public class ConsultingRequest {
     private String phoneNumber;
 
     @Builder
-    public ConsultingRequest(LocalDateTime consultingDateTime, String message, int managerCount, int designerCount, int frontendCount, int backendCount, Long mentorId, String phoneNumber) {
+    public ConsultingRequest(LocalDateTime consultingDateTime, String message, String menteePosition, int managerCount, int designerCount, int frontendCount, int backendCount, Long mentorId, String phoneNumber) {
         this.consultingDateTime = consultingDateTime;
         this.message = message;
+        this.menteePosition = menteePosition;
         this.managerCount = managerCount;
         this.designerCount = designerCount;
         this.frontendCount = frontendCount;

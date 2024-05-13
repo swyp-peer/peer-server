@@ -62,6 +62,7 @@ public class ConsultingService {
                 .consultingDateTime(consultingRequest.getConsultingDateTime())
                 .consultingDetail(consultingDetailRepository.save(ConsultingDetail.builder()
                         .message(consultingRequest.getMessage())
+                        .menteePosition(consultingRequest.getMenteePosition())
                         .teamComposition(TeamComposition.builder()
                                 .managerCount(consultingRequest.getManagerCount())
                                 .designerCount(consultingRequest.getDesignerCount())

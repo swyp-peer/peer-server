@@ -43,7 +43,7 @@ public class UserController {
     /*
     멘토 상세 정보 수정
      */
-    @PostMapping("/mentor/update")
+    @PatchMapping("/mentor/update")
     public ResponseEntity<MentorDetailResponse> UpdateMentorDetail(
             MentorDetailRequest mentorDetailRequest,
             Long mentorId

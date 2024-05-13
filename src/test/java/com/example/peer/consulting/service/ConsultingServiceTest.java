@@ -71,6 +71,7 @@ public class ConsultingServiceTest {
                 .nickname("peer123")
                 .introduction("hello")
                 .position("backend")
+                .openTalkLink("kakaoLink")
                 .build();
         mentorDetailRepository.save(mentorDetail);
         mentor.UpdateMentorDetail(mentorDetail);
@@ -106,6 +107,7 @@ public class ConsultingServiceTest {
         ConsultingRequest consultingRequest = ConsultingRequest.builder()
                 .consultingDateTime(consultingDateTime)
                 .message("x")
+                .menteePosition("backend")
                 .managerCount(1)
                 .designerCount(2)
                 .frontendCount(3)
@@ -125,6 +127,7 @@ public class ConsultingServiceTest {
         Assertions.assertEquals(consulting.getState(), State.WAITING);
         Assertions.assertEquals(consulting.getMentee(), mentee);
         Assertions.assertEquals(consulting.getMentor(), mentor);
+        Assertions.assertEquals(consulting.getConsultingDetail().getMenteePosition(), "backend");
         Assertions.assertEquals(mentee.getPhoneNumber(), "01000000000");
         Assertions.assertEquals(consulting.getConsultingDetail().getTeamComposition().getBackendCount(), 3);
     }
@@ -143,6 +146,7 @@ public class ConsultingServiceTest {
         ConsultingRequest consultingRequest = ConsultingRequest.builder()
                 .consultingDateTime(consultingDateTime)
                 .message("x")
+                .menteePosition("backend")
                 .managerCount(1)
                 .designerCount(2)
                 .frontendCount(3)
@@ -170,6 +174,7 @@ public class ConsultingServiceTest {
         ConsultingRequest consultingRequest = ConsultingRequest.builder()
                 .consultingDateTime(consultingDateTime)
                 .message("x")
+                .menteePosition("backend")
                 .managerCount(1)
                 .designerCount(2)
                 .frontendCount(3)
@@ -205,6 +210,7 @@ public class ConsultingServiceTest {
         ConsultingRequest consultingRequest1 = ConsultingRequest.builder()
                 .consultingDateTime(consultingDateTime)
                 .message("consultingRequest1")
+                .menteePosition("backend")
                 .managerCount(1)
                 .designerCount(2)
                 .frontendCount(3)
@@ -215,7 +221,8 @@ public class ConsultingServiceTest {
 
         ConsultingRequest consultingRequest2 = ConsultingRequest.builder()
                 .consultingDateTime(consultingDateTime)
-                .message("consultingRequest1")
+                .message("consultingRequest2")
+                .menteePosition("backend")
                 .managerCount(2)
                 .designerCount(3)
                 .frontendCount(4)
@@ -249,6 +256,7 @@ public class ConsultingServiceTest {
         ConsultingRequest consultingRequest = ConsultingRequest.builder()
                 .consultingDateTime(consultingDateTime)
                 .message("x")
+                .menteePosition("backend")
                 .managerCount(1)
                 .designerCount(2)
                 .frontendCount(3)
@@ -284,6 +292,7 @@ public class ConsultingServiceTest {
         ConsultingRequest consultingRequest = ConsultingRequest.builder()
                 .consultingDateTime(consultingDateTime)
                 .message("x")
+                .menteePosition("backend")
                 .managerCount(1)
                 .designerCount(2)
                 .frontendCount(3)
@@ -322,6 +331,7 @@ public class ConsultingServiceTest {
         ConsultingRequest consultingRequest = ConsultingRequest.builder()
                 .consultingDateTime(consultingDateTime)
                 .message("x")
+                .menteePosition("backend")
                 .managerCount(1)
                 .designerCount(2)
                 .frontendCount(3)
@@ -344,6 +354,7 @@ public class ConsultingServiceTest {
         Assertions.assertEquals(consultingDetail.getManagerCount(), 1);
         Assertions.assertEquals(consultingDetail.getMenteeName(), mentee.getName());
         Assertions.assertEquals(consultingDetail.getMentorNickname(), mentor.getMentorDetail().getNickname());
+        Assertions.assertEquals(consultingDetail.getOpenTalkLink(), mentor.getMentorDetail().getOpenTalkLink());
     }
 
     @Test
@@ -361,6 +372,7 @@ public class ConsultingServiceTest {
         ConsultingRequest consultingRequest1 = ConsultingRequest.builder()
                 .consultingDateTime(consultingDateTime1)
                 .message("x")
+                .menteePosition("backend")
                 .managerCount(1)
                 .designerCount(2)
                 .frontendCount(3)
@@ -372,6 +384,7 @@ public class ConsultingServiceTest {
         ConsultingRequest consultingRequest2 = ConsultingRequest.builder()
                 .consultingDateTime(consultingDateTime2)
                 .message("x")
+                .menteePosition("backend")
                 .managerCount(1)
                 .designerCount(2)
                 .frontendCount(3)
@@ -419,6 +432,7 @@ public class ConsultingServiceTest {
         ConsultingRequest consultingRequest1 = ConsultingRequest.builder()
                 .consultingDateTime(consultingDateTime1)
                 .message("x")
+                .menteePosition("backend")
                 .managerCount(1)
                 .designerCount(2)
                 .frontendCount(3)
@@ -430,6 +444,7 @@ public class ConsultingServiceTest {
         ConsultingRequest consultingRequest2 = ConsultingRequest.builder()
                 .consultingDateTime(consultingDateTime2)
                 .message("x")
+                .menteePosition("backend")
                 .managerCount(1)
                 .designerCount(2)
                 .frontendCount(3)
