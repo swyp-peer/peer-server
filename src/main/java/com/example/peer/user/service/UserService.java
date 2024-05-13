@@ -4,6 +4,7 @@ import com.example.peer.user.dto.request.MentorDetailRequest;
 import com.example.peer.user.dto.response.*;
 import com.example.peer.user.entity.Keyword;
 import com.example.peer.user.entity.MentorDetail;
+import com.example.peer.user.entity.Role;
 import com.example.peer.user.entity.User;
 import com.example.peer.user.exception.UserErrorCode;
 import com.example.peer.user.exception.UserException;
@@ -40,6 +41,8 @@ public class UserService {
         User mentor = userRepository.findById(mentorId).orElseThrow(
                 () -> new UserException(UserErrorCode.USER_NOT_FOUND)
         );
+        mentor.UpdateRole(Role.MENTOR);
+        mentor.UpdatePhoneNumber(mentorDetailRequest.getPhoneNumber());
         mentor.UpdateMentorDetail(mentorDetail);
         return MentorDetailResponse.builder()
                 .mentorDetail(mentorDetail)

@@ -30,6 +30,7 @@ public class MentorDetail {
 
 	private String openTalkLink;
 
+	@Enumerated(EnumType.STRING)
 	@ElementCollection
 	@CollectionTable(name = "mentor_keywords",joinColumns = @JoinColumn(name = "mentor_detail_id"))
 	private List<Keyword> keywords = new ArrayList<>();
