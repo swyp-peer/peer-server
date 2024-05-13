@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://peer-server:3306
+    url: jdbc:mysql://3.38.47.33:3306/peer?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: 1236
   security:
