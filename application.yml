@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://peer-server:3306
+    username: root
+    password: 1236
+  security:
+    jwt:
+      secret-key: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT}
+            client-secret: ${GOOGLE_SECRET}
+            scope: # google API의 범위 값
+              - profile
+              - email
+
+          kakao:
+            client-id: af328857e9435a806029369bd5abdb36
+            # client-secret: ${KAKAO_SECRET}
+            redirect-uri: localhost/login/oauth2/code/kakao
+            client-authentication-method: client_secret_post
+            # kakao는 인증 토큰 발급 요청 메서드가 post이다. (최근 버전에는 작성 방법이 이렇게 바뀌었다.)
+            authorization-grant-type: authorization_code
+	@@ -33,6 +35,20 @@ spring:
+              - profile_image
+              - account_email
+            client-name: kakao
+
+        # kakao provider 설정
+        provider:
+	@@ -41,3 +57,11 @@ spring:
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id # 유저 정보 조회 시 반환되는 최상위 필드명으로 해야 한다.
