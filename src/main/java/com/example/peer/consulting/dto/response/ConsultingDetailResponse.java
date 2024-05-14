@@ -25,6 +25,8 @@ public class ConsultingDetailResponse {
 
     private String message;
 
+    private String menteePosition;
+
     private int managerCount;
 
     private int designerCount;
@@ -41,11 +43,14 @@ public class ConsultingDetailResponse {
 
     private String mentorPosition;
 
+    private String openTalkLink;
+
     @Builder
     public ConsultingDetailResponse(Consulting consulting, ConsultingDetail consultingDetail, TeamComposition teamComposition, MentorDetail mentorDetail, User mentee) {
         this.id = consulting.getId();
         this.consultingDateTime = consulting.getConsultingDateTime();
         this.message = consultingDetail.getMessage();
+        this.menteePosition = consultingDetail.getMenteePosition();
         this.managerCount = teamComposition.getManagerCount();
         this.designerCount = teamComposition.getDesignerCount();
         this.frontendCount = teamComposition.getFrontendCount();
@@ -54,5 +59,11 @@ public class ConsultingDetailResponse {
         this.menteeName = mentee.getName();
         this.mentorNickname = mentorDetail.getNickname();
         this.mentorPosition = mentorDetail.getPosition();
+
+        if (consulting.getState()==State.ACCEPTED) {
+            this.openTalkLink = mentorDetail.getOpenTalkLink();
+        } else {
+            this.openTalkLink = "NONE";
+        }
     }
 }

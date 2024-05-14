@@ -18,12 +18,15 @@ public class ConsultingDetail {
 
     private String message;
 
+    private String menteePosition;
+
     @Embedded
     private TeamComposition teamComposition;
 
     @Builder
-    public ConsultingDetail(String message, TeamComposition teamComposition) {
+    public ConsultingDetail(String message, String menteePosition, TeamComposition teamComposition) {
         this.message = message;
+        this.menteePosition = menteePosition;
         this.teamComposition = teamComposition;
     }
 }
