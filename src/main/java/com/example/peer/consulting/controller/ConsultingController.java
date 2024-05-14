@@ -5,6 +5,8 @@ import com.example.peer.consulting.dto.response.ConsultingDetailResponse;
 import com.example.peer.consulting.dto.response.ConsultingSummariesResponse;
 import com.example.peer.consulting.entity.State;
 import com.example.peer.consulting.service.ConsultingService;
+import com.example.peer.security.service.TokenService;
+import com.example.peer.security.utils.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +17,19 @@ import org.springframework.web.bind.annotation.*;
 public class ConsultingController {
 
     private final ConsultingService consultingService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenService tokenService;
 
     /*
     멘티가 새로운 상담을 신청
      */
     @PostMapping("/mentee/create")
     public ResponseEntity<ConsultingDetailResponse> CreateConsulting(
-            ConsultingRequest consultingRequest,
-            Long menteeId
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody ConsultingRequest consultingRequest
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.CreateConsulting(consultingRequest, menteeId));
+                .body(consultingService.CreateConsulting(consultingRequest, tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
     }
 
     /*
@@ -34,10 +38,10 @@ public class ConsultingController {
     @GetMapping("/mentor/{consultingId}")
     public ResponseEntity<ConsultingDetailResponse> ViewConsultingDetailMentor(
             @PathVariable("consultingId") Long consultingId,
-            Long mentorId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewConsultingDetailMentor(consultingId, mentorId));
+                .body(consultingService.ViewConsultingDetailMentor(consultingId, tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
     }
 
     /*
@@ -46,10 +50,10 @@ public class ConsultingController {
     @GetMapping("/mentee/{consultingId}")
     public ResponseEntity<ConsultingDetailResponse> ViewConsultingDetailMentee(
             @PathVariable("consultingId") Long consultingId,
-            Long menteeId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewConsultingDetailMentee(consultingId, menteeId));
+                .body(consultingService.ViewConsultingDetailMentee(consultingId, tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
     }
 
     /*
@@ -58,10 +62,10 @@ public class ConsultingController {
     @GetMapping("/mentor/{consultingId}/accept")
     public ResponseEntity<ConsultingDetailResponse> AcceptConsulting(
             @PathVariable("consultingId") Long consultingId,
-            Long mentorId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.AcceptConsulting(consultingId, mentorId));
+                .body(consultingService.AcceptConsulting(consultingId, tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
     }
 
     /*
@@ -70,10 +74,10 @@ public class ConsultingController {
     @GetMapping("/mentor/{consultingId}/reject")
     public ResponseEntity<ConsultingDetailResponse> RejectConsulting(
             @PathVariable("consultingId") Long consultingId,
-            Long mentorId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.RejectConsulting(consultingId, mentorId));
+                .body(consultingService.RejectConsulting(consultingId, tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
     }
 
     /*
@@ -81,10 +85,10 @@ public class ConsultingController {
      */
     @GetMapping("/mentor/past")
     public ResponseEntity<ConsultingSummariesResponse> ViewPastConsultingMentor(
-            Long mentorId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPastConsultingMentor(mentorId));
+                .body(consultingService.ViewPastConsultingMentor(tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
     }
 
     /*
@@ -92,10 +96,10 @@ public class ConsultingController {
      */
     @GetMapping("/mentee/past")
     public ResponseEntity<ConsultingSummariesResponse> ViewPastConsultingMentee(
-            Long menteeId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPastConsultingMentee(menteeId));
+                .body(consultingService.ViewPastConsultingMentee(tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
     }
 
     /*
@@ -103,10 +107,10 @@ public class ConsultingController {
      */
     @GetMapping("/mentor/accepted")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentAcceptedConsultingMentor(
-            Long mentorId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentor(mentorId, State.ACCEPTED));
+                .body(consultingService.ViewPresentConsultingMentor(tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization)), State.ACCEPTED));
     }
 
     /*
@@ -114,10 +118,10 @@ public class ConsultingController {
      */
     @GetMapping("/mentor/waiting")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentWaitingConsultingMentor(
-            Long mentorId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentor(mentorId, State.WAITING));
+                .body(consultingService.ViewPresentConsultingMentor(tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization)), State.WAITING));
     }
 
     /*
@@ -125,10 +129,10 @@ public class ConsultingController {
      */
     @GetMapping("/mentor/rejected")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentRejectedConsultingMentor(
-            Long mentorId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentor(mentorId, State.REJECTED));
+                .body(consultingService.ViewPresentConsultingMentor(tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization)), State.REJECTED));
     }
 
     /*
@@ -136,10 +140,10 @@ public class ConsultingController {
      */
     @GetMapping("/mentee/accepted")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentAcceptedConsultingMentee(
-            Long menteeId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentee(menteeId, State.ACCEPTED));
+                .body(consultingService.ViewPresentConsultingMentee(tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization)), State.ACCEPTED));
     }
 
     /*
@@ -147,10 +151,10 @@ public class ConsultingController {
      */
     @GetMapping("/mentee/waiting")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentWaitingConsultingMentee(
-            Long menteeId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentee(menteeId, State.WAITING));
+                .body(consultingService.ViewPresentConsultingMentee(tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization)), State.WAITING));
     }
 
     /*
@@ -158,9 +162,9 @@ public class ConsultingController {
      */
     @GetMapping("/mentee/rejected")
     public ResponseEntity<ConsultingSummariesResponse> ViewPresentRejectedConsultingMentee(
-            Long menteeId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(consultingService.ViewPresentConsultingMentee(menteeId, State.REJECTED));
+                .body(consultingService.ViewPresentConsultingMentee(tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization)), State.REJECTED));
     }
 }
