@@ -20,6 +20,7 @@ public class Consulting extends BaseTimeEntity {
     @Column(name = "consulting_id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private State state;
 
     @ManyToOne(fetch = FetchType.LAZY)

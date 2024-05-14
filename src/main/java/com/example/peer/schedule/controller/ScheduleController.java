@@ -55,7 +55,8 @@ public class ScheduleController {
      */
     @GetMapping("/mentee/view/{mentorId}")
     public ResponseEntity<PossibleSchedulesResponse> ViewPossibleSchedules(
-            @PathVariable("mentorId") Long mentorId
+            @PathVariable("mentorId") Long mentorId,
+            Long menteeId
     ) {
         return ResponseEntity.ok()
                 .body(scheduleService.ViewPossibleSchedules(mentorId));

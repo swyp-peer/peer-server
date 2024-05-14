@@ -28,19 +28,25 @@ public class MentorDetail {
 
 	private Boolean isAccepted;
 
-	@OneToMany(mappedBy = "mentorDetail")
-	private List<KeywordMentorDetail> keywordMentorDetails = new ArrayList<>();
+	private String openTalkLink;
+
+	@Enumerated(EnumType.STRING)
+	@ElementCollection
+	@CollectionTable(name = "mentor_keywords",joinColumns = @JoinColumn(name = "mentor_detail_id"))
+	private List<Keyword> keywords = new ArrayList<>();
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "schedule_create_rule_id")
 	private ScheduleRule scheduleRule;
 
 	@Builder
-	public MentorDetail(String nickname, String position, String introduction) {
+	public MentorDetail(String nickname, String position, String introduction, String openTalkLink, List<Keyword> keywords) {
 		this.nickname = nickname;
 		this.position = position;
 		this.introduction = introduction;
-		this.isAccepted = Boolean.FALSE;
+		this.openTalkLink = openTalkLink;
+		this.keywords = keywords;
+		this.isAccepted = Boolean.TRUE;
 	}
 
 	public void UpdateIsAccepted(Boolean isAccepted) {
@@ -49,5 +55,13 @@ public class MentorDetail {
 
 	public void UpdateScheduleRule(ScheduleRule scheduleRule) {
 		this.scheduleRule = scheduleRule;
+	}
+
+	public void UpdateMentorDetail(String nickname, String position, String introduction, String openTalkLink, List<Keyword> keywords) {
+		this.nickname = nickname;
+		this.position = position;
+		this.introduction = introduction;
+		this.openTalkLink = openTalkLink;
+		this.keywords = keywords;
 	}
 }
