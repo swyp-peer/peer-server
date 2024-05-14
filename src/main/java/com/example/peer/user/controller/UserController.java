@@ -1,5 +1,7 @@
 package com.example.peer.user.controller;
 
+import com.example.peer.security.service.TokenService;
+import com.example.peer.security.utils.JwtTokenProvider;
 import com.example.peer.user.dto.request.MentorDetailRequest;
 import com.example.peer.user.dto.response.MenteeDetailResponse;
 import com.example.peer.user.dto.response.MentorDetailResponse;
@@ -16,17 +18,19 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenService tokenService;
 
     /*
     새로운 멘토 등록
      */
     @PostMapping("/mentor/create")
     public ResponseEntity<MentorDetailResponse> CreateMentorDetail(
-            MentorDetailRequest mentorDetailRequest,
-            Long mentorId
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody MentorDetailRequest mentorDetailRequest
     ) {
         return ResponseEntity.ok()
-                .body(userService.CreateMentorDetail(mentorDetailRequest, mentorId));
+                .body(userService.CreateMentorDetail(mentorDetailRequest, tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
     }
 
     /*
@@ -34,10 +38,10 @@ public class UserController {
      */
     @GetMapping("/mentor/view")
     public ResponseEntity<MentorDetailResponse> ViewMentorDetail(
-            Long mentorId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(userService.ViewMentorDetail(mentorId));
+                .body(userService.ViewMentorDetail(tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
     }
 
     /*
@@ -45,11 +49,11 @@ public class UserController {
      */
     @PatchMapping("/mentor/update")
     public ResponseEntity<MentorDetailResponse> UpdateMentorDetail(
-            MentorDetailRequest mentorDetailRequest,
-            Long mentorId
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody MentorDetailRequest mentorDetailRequest
     ){
         return ResponseEntity.ok()
-                .body(userService.UpdateMentorDetail(mentorDetailRequest, mentorId));
+                .body(userService.UpdateMentorDetail(mentorDetailRequest, tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
     }
 
     /*
@@ -57,10 +61,10 @@ public class UserController {
      */
     @GetMapping("/mentee/view")
     public ResponseEntity<MenteeDetailResponse> ViewMenteeDetail(
-            Long menteeId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(userService.ViewMenteeDetail(menteeId));
+                .body(userService.ViewMenteeDetail(tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
     }
 
     /*
@@ -68,10 +72,10 @@ public class UserController {
     */
     @GetMapping("/mentee/mentorlist")
     public ResponseEntity<MentorSummariesResponse> ViewAcceptedMentorList(
-            Long menteeId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
-                .body(userService.ViewAcceptedMentorList(menteeId));
+                .body(userService.ViewAcceptedMentorList(tokenService.getUserIdFromToken(jwtTokenProvider.resolveToken(authorization))));
     }
 
     /*
@@ -80,7 +84,7 @@ public class UserController {
     @GetMapping("/mentee/{mentorId}")
     public ResponseEntity<MentorForMenteeResponse> ViewMentorByMentee(
             @PathVariable("mentorId") Long mentorId,
-            Long menteeId
+            @RequestHeader("Authorization") String authorization
     ) {
         return ResponseEntity.ok()
                 .body(userService.ViewMentorByMentee(mentorId));
