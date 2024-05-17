@@ -32,7 +32,6 @@ public class User extends BaseTimeEntity {
 
 	private String profileImageUrl;
 
-	@Enumerated(EnumType.STRING)
 	private OauthType oauthType;
 
 	private String socialId;
